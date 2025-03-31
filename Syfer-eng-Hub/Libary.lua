@@ -1064,7 +1064,7 @@ function refreshConfigList()
         NoConfigsLabel.Name = "NoConfigsLabel"
         NoConfigsLabel.Size = UDim2.new(1, 0, 0, 40)
         NoConfigsLabel.BackgroundTransparency = 1
-        NoConfigsLabel.Text = "No saved configurations found"
+        NoConfigsLabel.Text = ""
         NoConfigsLabel.Font = Enum.Font.Gotham
         NoConfigsLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
         NoConfigsLabel.TextSize = 14
