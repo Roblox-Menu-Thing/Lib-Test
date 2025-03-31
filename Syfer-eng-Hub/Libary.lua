@@ -61,8 +61,8 @@ function SyferEngHubLibrary.Create(options)
 
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
-MainFrame.Size = UDim2.new(0, 550, 0, 350)
-MainFrame.Position = UDim2.new(0.5, -275, 0.5, -175)
+MainFrame.Size = UDim2.new(0, 650, 0, 400) -- Increased size from 550x350 to 650x400
+MainFrame.Position = UDim2.new(0.5, -325, 0.5, -200) -- Adjusted position to keep it centered
 MainFrame.BackgroundColor3 = DEFAULT_COLOR
 MainFrame.BorderSizePixel = 0
 MainFrame.Active = true
@@ -221,6 +221,31 @@ ConfigTabContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
 ConfigTabContent.Parent = ContentFrame
 ConfigTabContent.Visible = false
 
+-- Create Settings Tab Content
+local SettingsTabContent = Instance.new("ScrollingFrame")
+SettingsTabContent.Name = "SettingsTabContent"
+SettingsTabContent.Size = UDim2.new(1, 0, 1, 0)
+SettingsTabContent.BackgroundTransparency = 1
+SettingsTabContent.BorderSizePixel = 0
+SettingsTabContent.ScrollBarThickness = 4
+SettingsTabContent.ScrollBarImageColor3 = ACCENT_COLOR
+SettingsTabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
+SettingsTabContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
+SettingsTabContent.Parent = ContentFrame
+SettingsTabContent.Visible = false
+
+local SettingsLayout = Instance.new("UIListLayout")
+SettingsLayout.Name = "SettingsLayout"
+SettingsLayout.Padding = UDim.new(0, 15)
+SettingsLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+SettingsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+SettingsLayout.Parent = SettingsTabContent
+
+local SettingsPadding = Instance.new("UIPadding")
+SettingsPadding.PaddingTop = UDim.new(0, 20)
+SettingsPadding.PaddingBottom = UDim.new(0, 20)
+SettingsPadding.Parent = SettingsTabContent
+
 local ConfigLayout = Instance.new("UIListLayout")
 ConfigLayout.Name = "ConfigLayout"
 ConfigLayout.Padding = UDim.new(0, 10)
@@ -378,10 +403,16 @@ local function createTabButton(name, position)
         if name == "Main" then
             MainTabContent.Visible = true
             ConfigTabContent.Visible = false
+            SettingsTabContent.Visible = false
         elseif name == "Config" then
             MainTabContent.Visible = false
             ConfigTabContent.Visible = true
+            SettingsTabContent.Visible = false
             refreshConfigList() -- Refresh the config list when switching to config tab
+        elseif name == "Settings" then
+            MainTabContent.Visible = false
+            ConfigTabContent.Visible = false
+            SettingsTabContent.Visible = true
         end
         
         -- Update tab button appearance
@@ -417,6 +448,7 @@ end
 
 local MainTab = createTabButton("Main", 0)
 local ConfigTab = createTabButton("Config", 40)
+local SettingsTab = createTabButton("Settings", 80)
 
 local function makeDraggable(dragFrame, mainFrame)
     local dragToggle = nil
@@ -843,6 +875,395 @@ end)
 
     refreshConfigList()
     
+    -- Initialize Settings tab content
+    local toggleKeybind = Enum.KeyCode.Insert -- Default toggle key is Insert
+    
+    -- Create settings elements
+    local SettingsTitle = Instance.new("TextLabel")
+    SettingsTitle.Name = "SettingsTitle"
+    SettingsTitle.Size = UDim2.new(0.9, 0, 0, 40)
+    SettingsTitle.BackgroundTransparency = 1
+    SettingsTitle.Text = "Settings"
+    SettingsTitle.Font = Enum.Font.GothamBold
+    SettingsTitle.TextColor3 = TEXT_COLOR
+    SettingsTitle.TextSize = 22
+    SettingsTitle.Parent = SettingsTabContent
+    
+    -- Menu Toggle Settings
+    local MenuToggleSetting = Instance.new("Frame")
+    MenuToggleSetting.Name = "MenuToggleSetting"
+    MenuToggleSetting.Size = UDim2.new(0.9, 0, 0, 50)
+    MenuToggleSetting.BackgroundColor3 = TERTIARY_COLOR
+    MenuToggleSetting.BorderSizePixel = 0
+    MenuToggleSetting.Parent = SettingsTabContent
+    
+    -- Add outline
+    local MenuToggleOutline = Instance.new("UIStroke")
+    MenuToggleOutline.Name = "MenuToggleOutline"
+    MenuToggleOutline.Color = Color3.fromRGB(80, 80, 100)
+    MenuToggleOutline.Thickness = 1.5
+    MenuToggleOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    MenuToggleOutline.Parent = MenuToggleSetting
+    
+    -- Add gradient
+    local MenuToggleGradient = Instance.new("UIGradient")
+    MenuToggleGradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, TERTIARY_COLOR),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(45, 45, 55))
+    })
+    MenuToggleGradient.Rotation = 90
+    MenuToggleGradient.Parent = MenuToggleSetting
+    
+    -- Round the corners
+    local MenuToggleCorner = Instance.new("UICorner")
+    MenuToggleCorner.CornerRadius = UDim.new(0, 6)
+    MenuToggleCorner.Parent = MenuToggleSetting
+    
+    -- Setting Label
+    local MenuToggleLabel = Instance.new("TextLabel")
+    MenuToggleLabel.Name = "MenuToggleLabel"
+    MenuToggleLabel.Size = UDim2.new(0.6, 0, 0.5, 0)
+    MenuToggleLabel.Position = UDim2.new(0, 15, 0, 5)
+    MenuToggleLabel.BackgroundTransparency = 1
+    MenuToggleLabel.Text = "Menu Toggle Key"
+    MenuToggleLabel.Font = Enum.Font.GothamSemibold
+    MenuToggleLabel.TextColor3 = TEXT_COLOR
+    MenuToggleLabel.TextSize = 14
+    MenuToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    MenuToggleLabel.Parent = MenuToggleSetting
+    
+    -- Setting Description
+    local MenuToggleDescription = Instance.new("TextLabel")
+    MenuToggleDescription.Name = "MenuToggleDescription"
+    MenuToggleDescription.Size = UDim2.new(0.6, 0, 0.5, 0)
+    MenuToggleDescription.Position = UDim2.new(0, 15, 0.5, 0)
+    MenuToggleDescription.BackgroundTransparency = 1
+    MenuToggleDescription.Text = "Key to show/hide the menu"
+    MenuToggleDescription.Font = Enum.Font.Gotham
+    MenuToggleDescription.TextColor3 = Color3.fromRGB(180, 180, 180)
+    MenuToggleDescription.TextSize = 12
+    MenuToggleDescription.TextXAlignment = Enum.TextXAlignment.Left
+    MenuToggleDescription.Parent = MenuToggleSetting
+    
+    -- Key Selector Button
+    local KeySelectorButton = Instance.new("TextButton")
+    KeySelectorButton.Name = "KeySelectorButton"
+    KeySelectorButton.Size = UDim2.new(0.25, 0, 0.7, 0)
+    KeySelectorButton.Position = UDim2.new(0.73, 0, 0.15, 0)
+    KeySelectorButton.BackgroundColor3 = SECONDARY_COLOR
+    KeySelectorButton.BorderSizePixel = 0
+    KeySelectorButton.Text = "Insert"
+    KeySelectorButton.Font = Enum.Font.GothamSemibold
+    KeySelectorButton.TextColor3 = TEXT_COLOR
+    KeySelectorButton.TextSize = 14
+    KeySelectorButton.Parent = MenuToggleSetting
+    
+    -- Round the key selector corners
+    local KeySelectorCorner = Instance.new("UICorner")
+    KeySelectorCorner.CornerRadius = UDim.new(0, 6)
+    KeySelectorCorner.Parent = KeySelectorButton
+    
+    -- Add outline to key selector
+    local KeySelectorOutline = Instance.new("UIStroke")
+    KeySelectorOutline.Name = "KeySelectorOutline"
+    KeySelectorOutline.Color = Color3.fromRGB(80, 80, 100)
+    KeySelectorOutline.Thickness = 1.5
+    KeySelectorOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    KeySelectorOutline.Parent = KeySelectorButton
+    
+    -- Appearance Settings Section
+    local AppearanceTitle = Instance.new("TextLabel")
+    AppearanceTitle.Name = "AppearanceTitle"
+    AppearanceTitle.Size = UDim2.new(0.9, 0, 0, 30)
+    AppearanceTitle.BackgroundTransparency = 1
+    AppearanceTitle.Text = "Appearance"
+    AppearanceTitle.Font = Enum.Font.GothamBold
+    AppearanceTitle.TextColor3 = TEXT_COLOR
+    AppearanceTitle.TextSize = 18
+    AppearanceTitle.TextXAlignment = Enum.TextXAlignment.Left
+    AppearanceTitle.Parent = SettingsTabContent
+    
+    -- Theme Selector
+    local ThemeSetting = Instance.new("Frame")
+    ThemeSetting.Name = "ThemeSetting"
+    ThemeSetting.Size = UDim2.new(0.9, 0, 0, 50)
+    ThemeSetting.BackgroundColor3 = TERTIARY_COLOR
+    ThemeSetting.BorderSizePixel = 0
+    ThemeSetting.Parent = SettingsTabContent
+    
+    -- Add outline
+    local ThemeOutline = Instance.new("UIStroke")
+    ThemeOutline.Name = "ThemeOutline"
+    ThemeOutline.Color = Color3.fromRGB(80, 80, 100)
+    ThemeOutline.Thickness = 1.5
+    ThemeOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    ThemeOutline.Parent = ThemeSetting
+    
+    -- Add gradient
+    local ThemeGradient = Instance.new("UIGradient")
+    ThemeGradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, TERTIARY_COLOR),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(45, 45, 55))
+    })
+    ThemeGradient.Rotation = 90
+    ThemeGradient.Parent = ThemeSetting
+    
+    -- Round the corners
+    local ThemeCorner = Instance.new("UICorner")
+    ThemeCorner.CornerRadius = UDim.new(0, 6)
+    ThemeCorner.Parent = ThemeSetting
+    
+    -- Theme Label
+    local ThemeLabel = Instance.new("TextLabel")
+    ThemeLabel.Name = "ThemeLabel"
+    ThemeLabel.Size = UDim2.new(0.6, 0, 0.5, 0)
+    ThemeLabel.Position = UDim2.new(0, 15, 0, 5)
+    ThemeLabel.BackgroundTransparency = 1
+    ThemeLabel.Text = "Theme Color"
+    ThemeLabel.Font = Enum.Font.GothamSemibold
+    ThemeLabel.TextColor3 = TEXT_COLOR
+    ThemeLabel.TextSize = 14
+    ThemeLabel.TextXAlignment = Enum.TextXAlignment.Left
+    ThemeLabel.Parent = ThemeSetting
+    
+    -- Theme Description
+    local ThemeDescription = Instance.new("TextLabel")
+    ThemeDescription.Name = "ThemeDescription"
+    ThemeDescription.Size = UDim2.new(0.6, 0, 0.5, 0)
+    ThemeDescription.Position = UDim2.new(0, 15, 0.5, 0)
+    ThemeDescription.BackgroundTransparency = 1
+    ThemeDescription.Text = "Change the accent color"
+    ThemeDescription.Font = Enum.Font.Gotham
+    ThemeDescription.TextColor3 = Color3.fromRGB(180, 180, 180)
+    ThemeDescription.TextSize = 12
+    ThemeDescription.TextXAlignment = Enum.TextXAlignment.Left
+    ThemeDescription.Parent = ThemeSetting
+    
+    -- Theme Dropdown Button
+    local ThemeDropdownButton = Instance.new("TextButton")
+    ThemeDropdownButton.Name = "ThemeDropdownButton"
+    ThemeDropdownButton.Size = UDim2.new(0.25, 0, 0.7, 0)
+    ThemeDropdownButton.Position = UDim2.new(0.73, 0, 0.15, 0)
+    ThemeDropdownButton.BackgroundColor3 = ACCENT_COLOR
+    ThemeDropdownButton.BorderSizePixel = 0
+    ThemeDropdownButton.Text = "Purple"
+    ThemeDropdownButton.Font = Enum.Font.GothamSemibold
+    ThemeDropdownButton.TextColor3 = TEXT_COLOR
+    ThemeDropdownButton.TextSize = 14
+    ThemeDropdownButton.Parent = ThemeSetting
+    
+    -- Round the theme dropdown corners
+    local ThemeDropdownCorner = Instance.new("UICorner")
+    ThemeDropdownCorner.CornerRadius = UDim.new(0, 6)
+    ThemeDropdownCorner.Parent = ThemeDropdownButton
+    
+    -- Add outline to theme dropdown
+    local ThemeDropdownOutline = Instance.new("UIStroke")
+    ThemeDropdownOutline.Name = "ThemeDropdownOutline"
+    ThemeDropdownOutline.Color = Color3.fromRGB(80, 80, 100)
+    ThemeDropdownOutline.Thickness = 1.5
+    ThemeDropdownOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    ThemeDropdownOutline.Parent = ThemeDropdownButton
+    
+    -- Other Settings Section
+    local OtherTitle = Instance.new("TextLabel")
+    OtherTitle.Name = "OtherTitle"
+    OtherTitle.Size = UDim2.new(0.9, 0, 0, 30)
+    OtherTitle.BackgroundTransparency = 1
+    OtherTitle.Text = "Other Settings"
+    OtherTitle.Font = Enum.Font.GothamBold
+    OtherTitle.TextColor3 = TEXT_COLOR
+    OtherTitle.TextSize = 18
+    OtherTitle.TextXAlignment = Enum.TextXAlignment.Left
+    OtherTitle.Parent = SettingsTabContent
+    
+    -- Notification Setting
+    local NotificationSetting = Instance.new("Frame")
+    NotificationSetting.Name = "NotificationSetting"
+    NotificationSetting.Size = UDim2.new(0.9, 0, 0, 50)
+    NotificationSetting.BackgroundColor3 = TERTIARY_COLOR
+    NotificationSetting.BorderSizePixel = 0
+    NotificationSetting.Parent = SettingsTabContent
+    
+    -- Add outline
+    local NotificationOutline = Instance.new("UIStroke")
+    NotificationOutline.Name = "NotificationOutline"
+    NotificationOutline.Color = Color3.fromRGB(80, 80, 100)
+    NotificationOutline.Thickness = 1.5
+    NotificationOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    NotificationOutline.Parent = NotificationSetting
+    
+    -- Add gradient
+    local NotificationGradient = Instance.new("UIGradient")
+    NotificationGradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, TERTIARY_COLOR),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(45, 45, 55))
+    })
+    NotificationGradient.Rotation = 90
+    NotificationGradient.Parent = NotificationSetting
+    
+    -- Round the corners
+    local NotificationCorner = Instance.new("UICorner")
+    NotificationCorner.CornerRadius = UDim.new(0, 6)
+    NotificationCorner.Parent = NotificationSetting
+    
+    -- Notification Label
+    local NotificationLabel = Instance.new("TextLabel")
+    NotificationLabel.Name = "NotificationLabel"
+    NotificationLabel.Size = UDim2.new(0.6, 0, 0.5, 0)
+    NotificationLabel.Position = UDim2.new(0, 15, 0, 5)
+    NotificationLabel.BackgroundTransparency = 1
+    NotificationLabel.Text = "Show Notifications"
+    NotificationLabel.Font = Enum.Font.GothamSemibold
+    NotificationLabel.TextColor3 = TEXT_COLOR
+    NotificationLabel.TextSize = 14
+    NotificationLabel.TextXAlignment = Enum.TextXAlignment.Left
+    NotificationLabel.Parent = NotificationSetting
+    
+    -- Notification Description
+    local NotificationDescription = Instance.new("TextLabel")
+    NotificationDescription.Name = "NotificationDescription"
+    NotificationDescription.Size = UDim2.new(0.6, 0, 0.5, 0)
+    NotificationDescription.Position = UDim2.new(0, 15, 0.5, 0)
+    NotificationDescription.BackgroundTransparency = 1
+    NotificationDescription.Text = "Enable or disable notifications"
+    NotificationDescription.Font = Enum.Font.Gotham
+    NotificationDescription.TextColor3 = Color3.fromRGB(180, 180, 180)
+    NotificationDescription.TextSize = 12
+    NotificationDescription.TextXAlignment = Enum.TextXAlignment.Left
+    NotificationDescription.Parent = NotificationSetting
+    
+    -- Notification Toggle
+    local NotificationToggle = Instance.new("Frame")
+    NotificationToggle.Name = "NotificationToggle"
+    NotificationToggle.Size = UDim2.new(0, 40, 0, 20)
+    NotificationToggle.Position = UDim2.new(0.89, -40, 0.5, -10)
+    NotificationToggle.BackgroundColor3 = TOGGLE_ON_COLOR
+    NotificationToggle.BorderSizePixel = 0
+    NotificationToggle.Parent = NotificationSetting
+    
+    -- Round the corners
+    local NotificationToggleCorner = Instance.new("UICorner")
+    NotificationToggleCorner.CornerRadius = UDim.new(1, 0)
+    NotificationToggleCorner.Parent = NotificationToggle
+    
+    -- Toggle Knob
+    local NotificationKnob = Instance.new("Frame")
+    NotificationKnob.Name = "NotificationKnob"
+    NotificationKnob.Size = UDim2.new(0, 16, 0, 16)
+    NotificationKnob.Position = UDim2.new(0.6, 0, 0.5, -8)
+    NotificationKnob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    NotificationKnob.BorderSizePixel = 0
+    NotificationKnob.Parent = NotificationToggle
+    
+    -- Round the corners
+    local NotificationKnobCorner = Instance.new("UICorner")
+    NotificationKnobCorner.CornerRadius = UDim.new(1, 0)
+    NotificationKnobCorner.Parent = NotificationKnob
+    
+    -- Key selector functionality
+    local isSelectingKey = false
+    
+    KeySelectorButton.MouseButton1Click:Connect(function()
+        if isSelectingKey then return end
+        
+        isSelectingKey = true
+        KeySelectorButton.Text = "Press a key..."
+        
+        local connection
+        connection = UserInputService.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.Keyboard then
+                toggleKeybind = input.KeyCode
+                KeySelectorButton.Text = input.KeyCode.Name
+                isSelectingKey = false
+                connection:Disconnect()
+            end
+        end)
+    end)
+    
+    -- Notification toggle functionality
+    local showNotifications = true
+    
+    NotificationSetting.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            showNotifications = not showNotifications
+            
+            -- Update visual appearance
+            NotificationToggle.BackgroundColor3 = showNotifications and TOGGLE_ON_COLOR or TOGGLE_OFF_COLOR
+            
+            -- Tween the knob position
+            local newPosition = showNotifications and UDim2.new(0.6, 0, 0.5, -8) or UDim2.new(0, 2, 0.5, -8)
+            local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+            local tween = TweenService:Create(NotificationKnob, tweenInfo, {Position = newPosition})
+            tween:Play()
+        end
+    end)
+    
+    -- Theme selector functionality (simple version)
+    ThemeDropdownButton.MouseButton1Click:Connect(function()
+        -- Cycle through colors: Purple (default) -> Blue -> Red -> Green
+        if ThemeDropdownButton.Text == "Purple" then
+            ThemeDropdownButton.Text = "Blue"
+            ThemeDropdownButton.BackgroundColor3 = Color3.fromRGB(50, 120, 255)
+            ACCENT_COLOR = Color3.fromRGB(50, 120, 255)
+            TOGGLE_ON_COLOR = Color3.fromRGB(50, 120, 255)
+            GRADIENT_COLOR1 = Color3.fromRGB(30, 80, 220)
+            GRADIENT_COLOR2 = Color3.fromRGB(70, 150, 255)
+        elseif ThemeDropdownButton.Text == "Blue" then
+            ThemeDropdownButton.Text = "Red"
+            ThemeDropdownButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+            ACCENT_COLOR = Color3.fromRGB(255, 50, 50)
+            TOGGLE_ON_COLOR = Color3.fromRGB(255, 50, 50)
+            GRADIENT_COLOR1 = Color3.fromRGB(220, 40, 40)
+            GRADIENT_COLOR2 = Color3.fromRGB(255, 70, 70)
+        elseif ThemeDropdownButton.Text == "Red" then
+            ThemeDropdownButton.Text = "Green"
+            ThemeDropdownButton.BackgroundColor3 = Color3.fromRGB(50, 200, 80)
+            ACCENT_COLOR = Color3.fromRGB(50, 200, 80)
+            TOGGLE_ON_COLOR = Color3.fromRGB(50, 200, 80)
+            GRADIENT_COLOR1 = Color3.fromRGB(40, 180, 60)
+            GRADIENT_COLOR2 = Color3.fromRGB(70, 220, 100)
+        else
+            ThemeDropdownButton.Text = "Purple"
+            ThemeDropdownButton.BackgroundColor3 = Color3.fromRGB(180, 50, 255)
+            ACCENT_COLOR = Color3.fromRGB(180, 50, 255)
+            TOGGLE_ON_COLOR = Color3.fromRGB(180, 50, 255)
+            GRADIENT_COLOR1 = Color3.fromRGB(120, 50, 255)
+            GRADIENT_COLOR2 = Color3.fromRGB(200, 50, 255)
+        end
+        
+        -- Update UI elements with new color
+        TitleBar.BackgroundColor3 = ACCENT_COLOR
+        CornerFix.BackgroundColor3 = ACCENT_COLOR
+        TitleGradient.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, GRADIENT_COLOR1),
+            ColorSequenceKeypoint.new(1, GRADIENT_COLOR2)
+        })
+        CornerFixGradient.Color = TitleGradient.Color
+        
+        -- Update all toggles that are enabled
+        for _, info in pairs(toggleButtons) do
+            if info.enabled then
+                info.indicator.BackgroundColor3 = TOGGLE_ON_COLOR
+            end
+        end
+        
+        -- Update save button
+        SaveConfigButton.BackgroundColor3 = ACCENT_COLOR
+        
+        -- Update notification toggle if enabled
+        if showNotifications then
+            NotificationToggle.BackgroundColor3 = TOGGLE_ON_COLOR
+        end
+    end)
+    
+    -- Make toggle key work
+    UserInputService.InputBegan:Connect(function(input, gameProcessed)
+        if not gameProcessed and input.KeyCode == toggleKeybind then
+            SyferEngHub.Enabled = not SyferEngHub.Enabled
+        end
+    end)
+
     -- Hub Methods
     local hubMethods = {}
     
@@ -864,6 +1285,37 @@ end)
     -- Delete a saved configuration
     function hubMethods:DeleteConfig(configName)
         deleteConfig(configName)
+    end
+    
+    -- Show or hide the hub
+    function hubMethods:Show()
+        SyferEngHub.Enabled = true
+    end
+    
+    function hubMethods:Hide()
+        SyferEngHub.Enabled = false
+    end
+    
+    function hubMethods:ToggleVisibility()
+        SyferEngHub.Enabled = not SyferEngHub.Enabled
+        return SyferEngHub.Enabled
+    end
+    
+    -- Set toggle key
+    function hubMethods:SetToggleKey(keyCode)
+        if typeof(keyCode) == "EnumItem" and keyCode.EnumType == Enum.KeyCode then
+            toggleKeybind = keyCode
+            if KeySelectorButton then
+                KeySelectorButton.Text = keyCode.Name
+            end
+            return true
+        end
+        return false
+    end
+    
+    -- Get current toggle key
+    function hubMethods:GetToggleKey()
+        return toggleKeybind
     end
     
     -- Get a list of all saved configurations
