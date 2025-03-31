@@ -1,4 +1,4 @@
-local SyferEngHubLibrary = loadstring(game:HttpGet("https://pastebin.com/raw/WUEX5V02", true))()
+local SyferEngHubLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/Roblox-Menu-Thing/Lib-Test/refs/heads/main/Syfer-eng-Hub/Libary.lua", true))()
 
 -- Create a new instance of the hub
 local hub = SyferEngHubLibrary.Create({
