@@ -22,7 +22,9 @@ function SyferEngHubLibrary.Create(options)
     options = options or {}
     
     -- Set up themes and configurations
-    local SAVE_FOLDER = options.saveFolder or "SyferEngHub"
+    local player = Players.LocalPlayer
+    local username = player and player.Name or "Default"
+    local SAVE_FOLDER = options.saveFolder or ("SyferEngHub/" .. username)
     local CONFIG_EXTENSION = options.configExtension or ".config"
     local DEFAULT_COLOR = options.defaultColor or Color3.fromRGB(20, 20, 25)
     local ACCENT_COLOR = options.accentColor or Color3.fromRGB(180, 50, 255)
@@ -36,7 +38,6 @@ function SyferEngHubLibrary.Create(options)
     local GRADIENT_COLOR2 = options.gradientColor2 or Color3.fromRGB(200, 50, 255)
     
     -- Initialize local variables
-    local player = Players.LocalPlayer
     local dragging = false
     local dragInput
     local dragStart
@@ -493,6 +494,69 @@ makeDraggable(TitleBar, MainFrame)
 
 CloseButton.MouseButton1Click:Connect(function()
     SyferEngHub:Destroy()
+end)
+
+-- Create footer with player information
+local FooterFrame = Instance.new("Frame")
+FooterFrame.Name = "FooterFrame"
+FooterFrame.Size = UDim2.new(1, -120, 0, 25) -- Same width as content frame, 25px height
+FooterFrame.Position = UDim2.new(0, 120, 1, -25) -- Position at bottom of main frame
+FooterFrame.BackgroundColor3 = SECONDARY_COLOR
+FooterFrame.BorderSizePixel = 0
+FooterFrame.ZIndex = 2
+FooterFrame.Parent = MainFrame
+
+local FooterOutline = Instance.new("UIStroke")
+FooterOutline.Name = "FooterOutline"
+FooterOutline.Color = Color3.fromRGB(60, 60, 80)
+FooterOutline.Thickness = 1
+FooterOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+FooterOutline.Parent = FooterFrame
+
+-- Player username on the left
+local UsernameLabel = Instance.new("TextLabel")
+UsernameLabel.Name = "UsernameLabel"
+UsernameLabel.Size = UDim2.new(0.4, 0, 1, 0)
+UsernameLabel.Position = UDim2.new(0, 10, 0, 0)
+UsernameLabel.BackgroundTransparency = 1
+UsernameLabel.Font = Enum.Font.Gotham
+UsernameLabel.TextColor3 = TEXT_COLOR
+UsernameLabel.TextSize = 12
+UsernameLabel.TextXAlignment = Enum.TextXAlignment.Left
+UsernameLabel.ZIndex = 3
+UsernameLabel.Parent = FooterFrame
+
+-- Player count on the right
+local PlayerCountLabel = Instance.new("TextLabel")
+PlayerCountLabel.Name = "PlayerCountLabel"
+PlayerCountLabel.Size = UDim2.new(0.4, 0, 1, 0)
+PlayerCountLabel.Position = UDim2.new(0.6, -10, 0, 0)
+PlayerCountLabel.BackgroundTransparency = 1
+PlayerCountLabel.Font = Enum.Font.Gotham
+PlayerCountLabel.TextColor3 = TEXT_COLOR
+PlayerCountLabel.TextSize = 12
+PlayerCountLabel.TextXAlignment = Enum.TextXAlignment.Right
+PlayerCountLabel.ZIndex = 3
+PlayerCountLabel.Parent = FooterFrame
+
+-- Update player information
+local function updatePlayerInfo()
+    local username = player.Name or "Unknown"
+    local playerCount = #Players:GetPlayers()
+    
+    UsernameLabel.Text = "User: " .. username
+    PlayerCountLabel.Text = "Players: " .. playerCount
+end
+
+-- Initial update
+updatePlayerInfo()
+
+-- Periodically update player count (every 5 seconds)
+spawn(function()
+    while SyferEngHub.Parent do
+        updatePlayerInfo()
+        wait(5)
+    end
 end)
 
 local function createToggleButton(name, onScript, offScript, isEnabled)
