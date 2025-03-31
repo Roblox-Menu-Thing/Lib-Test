@@ -1,4 +1,8 @@
--- Version 1.1
+
+-- SyferEngHub Library
+-- A modular UI library for Roblox exploits with VapeV4-inspired design
+-- Version 1.0
+
 local SyferEngHubLibrary = {}
 
 function SyferEngHubLibrary.Create(options)
@@ -1061,6 +1065,219 @@ end)
     ThemeDropdownOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     ThemeDropdownOutline.Parent = ThemeDropdownButton
     
+    -- Custom Color Picker
+    local ColorPickerSetting = Instance.new("Frame")
+    ColorPickerSetting.Name = "ColorPickerSetting"
+    ColorPickerSetting.Size = UDim2.new(0.9, 0, 0, 180)
+    ColorPickerSetting.BackgroundColor3 = TERTIARY_COLOR
+    ColorPickerSetting.BorderSizePixel = 0
+    ColorPickerSetting.Parent = SettingsTabContent
+    
+    -- Add outline
+    local ColorPickerOutline = Instance.new("UIStroke")
+    ColorPickerOutline.Name = "ColorPickerOutline"
+    ColorPickerOutline.Color = Color3.fromRGB(80, 80, 100)
+    ColorPickerOutline.Thickness = 1.5
+    ColorPickerOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    ColorPickerOutline.Parent = ColorPickerSetting
+    
+    -- Add gradient
+    local ColorPickerGradient = Instance.new("UIGradient")
+    ColorPickerGradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, TERTIARY_COLOR),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(45, 45, 55))
+    })
+    ColorPickerGradient.Rotation = 90
+    ColorPickerGradient.Parent = ColorPickerSetting
+    
+    -- Round the corners
+    local ColorPickerCorner = Instance.new("UICorner")
+    ColorPickerCorner.CornerRadius = UDim.new(0, 6)
+    ColorPickerCorner.Parent = ColorPickerSetting
+    
+    -- Color Picker Label
+    local ColorPickerLabel = Instance.new("TextLabel")
+    ColorPickerLabel.Name = "ColorPickerLabel"
+    ColorPickerLabel.Size = UDim2.new(0.9, 0, 0, 30)
+    ColorPickerLabel.Position = UDim2.new(0.05, 0, 0, 5)
+    ColorPickerLabel.BackgroundTransparency = 1
+    ColorPickerLabel.Text = "Custom Color"
+    ColorPickerLabel.Font = Enum.Font.GothamSemibold
+    ColorPickerLabel.TextColor3 = TEXT_COLOR
+    ColorPickerLabel.TextSize = 14
+    ColorPickerLabel.TextXAlignment = Enum.TextXAlignment.Left
+    ColorPickerLabel.Parent = ColorPickerSetting
+    
+    -- Color Display
+    local ColorDisplay = Instance.new("Frame")
+    ColorDisplay.Name = "ColorDisplay"
+    ColorDisplay.Size = UDim2.new(0.9, 0, 0, 40)
+    ColorDisplay.Position = UDim2.new(0.05, 0, 0, 35)
+    ColorDisplay.BackgroundColor3 = ACCENT_COLOR
+    ColorDisplay.BorderSizePixel = 0
+    ColorDisplay.Parent = ColorPickerSetting
+    
+    -- Round the color display corners
+    local ColorDisplayCorner = Instance.new("UICorner")
+    ColorDisplayCorner.CornerRadius = UDim.new(0, 6)
+    ColorDisplayCorner.Parent = ColorDisplay
+    
+    -- Add outline to color display
+    local ColorDisplayOutline = Instance.new("UIStroke")
+    ColorDisplayOutline.Name = "ColorDisplayOutline"
+    ColorDisplayOutline.Color = Color3.fromRGB(80, 80, 100)
+    ColorDisplayOutline.Thickness = 1.5
+    ColorDisplayOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    ColorDisplayOutline.Parent = ColorDisplay
+    
+    -- RGB Sliders
+    -- Red Slider
+    local RedSliderFrame = Instance.new("Frame")
+    RedSliderFrame.Name = "RedSliderFrame"
+    RedSliderFrame.Size = UDim2.new(0.9, 0, 0, 25)
+    RedSliderFrame.Position = UDim2.new(0.05, 0, 0, 85)
+    RedSliderFrame.BackgroundColor3 = Color3.fromRGB(40, 30, 30)
+    RedSliderFrame.BorderSizePixel = 0
+    RedSliderFrame.Parent = ColorPickerSetting
+    
+    local RedSliderCorner = Instance.new("UICorner")
+    RedSliderCorner.CornerRadius = UDim.new(0, 6)
+    RedSliderCorner.Parent = RedSliderFrame
+    
+    local RedSliderOutline = Instance.new("UIStroke")
+    RedSliderOutline.Name = "RedSliderOutline"
+    RedSliderOutline.Color = Color3.fromRGB(100, 60, 60)
+    RedSliderOutline.Thickness = 1.5
+    RedSliderOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    RedSliderOutline.Parent = RedSliderFrame
+    
+    local RedSliderLabel = Instance.new("TextLabel")
+    RedSliderLabel.Name = "RedSliderLabel"
+    RedSliderLabel.Size = UDim2.new(0.1, 0, 1, 0)
+    RedSliderLabel.BackgroundTransparency = 1
+    RedSliderLabel.Text = "R"
+    RedSliderLabel.Font = Enum.Font.GothamBold
+    RedSliderLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+    RedSliderLabel.TextSize = 14
+    RedSliderLabel.Parent = RedSliderFrame
+    
+    local RedSlider = Instance.new("TextButton")
+    RedSlider.Name = "RedSlider"
+    RedSlider.Size = UDim2.new(0.8, 0, 1, 0)
+    RedSlider.Position = UDim2.new(0.15, 0, 0, 0)
+    RedSlider.BackgroundTransparency = 1
+    RedSlider.Text = ""
+    RedSlider.Parent = RedSliderFrame
+    
+    local RedSliderValue = Instance.new("Frame")
+    RedSliderValue.Name = "RedSliderValue"
+    RedSliderValue.Size = UDim2.new(0.5, 0, 1, 0)
+    RedSliderValue.BackgroundColor3 = Color3.fromRGB(255, 80, 80)
+    RedSliderValue.BorderSizePixel = 0
+    RedSliderValue.Parent = RedSlider
+    
+    local RedSliderValueCorner = Instance.new("UICorner")
+    RedSliderValueCorner.CornerRadius = UDim.new(0, 6)
+    RedSliderValueCorner.Parent = RedSliderValue
+    
+    -- Green Slider
+    local GreenSliderFrame = Instance.new("Frame")
+    GreenSliderFrame.Name = "GreenSliderFrame"
+    GreenSliderFrame.Size = UDim2.new(0.9, 0, 0, 25)
+    GreenSliderFrame.Position = UDim2.new(0.05, 0, 0, 115)
+    GreenSliderFrame.BackgroundColor3 = Color3.fromRGB(30, 40, 30)
+    GreenSliderFrame.BorderSizePixel = 0
+    GreenSliderFrame.Parent = ColorPickerSetting
+    
+    local GreenSliderCorner = Instance.new("UICorner")
+    GreenSliderCorner.CornerRadius = UDim.new(0, 6)
+    GreenSliderCorner.Parent = GreenSliderFrame
+    
+    local GreenSliderOutline = Instance.new("UIStroke")
+    GreenSliderOutline.Name = "GreenSliderOutline"
+    GreenSliderOutline.Color = Color3.fromRGB(60, 100, 60)
+    GreenSliderOutline.Thickness = 1.5
+    GreenSliderOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    GreenSliderOutline.Parent = GreenSliderFrame
+    
+    local GreenSliderLabel = Instance.new("TextLabel")
+    GreenSliderLabel.Name = "GreenSliderLabel"
+    GreenSliderLabel.Size = UDim2.new(0.1, 0, 1, 0)
+    GreenSliderLabel.BackgroundTransparency = 1
+    GreenSliderLabel.Text = "G"
+    GreenSliderLabel.Font = Enum.Font.GothamBold
+    GreenSliderLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
+    GreenSliderLabel.TextSize = 14
+    GreenSliderLabel.Parent = GreenSliderFrame
+    
+    local GreenSlider = Instance.new("TextButton")
+    GreenSlider.Name = "GreenSlider"
+    GreenSlider.Size = UDim2.new(0.8, 0, 1, 0)
+    GreenSlider.Position = UDim2.new(0.15, 0, 0, 0)
+    GreenSlider.BackgroundTransparency = 1
+    GreenSlider.Text = ""
+    GreenSlider.Parent = GreenSliderFrame
+    
+    local GreenSliderValue = Instance.new("Frame")
+    GreenSliderValue.Name = "GreenSliderValue"
+    GreenSliderValue.Size = UDim2.new(0.3, 0, 1, 0)
+    GreenSliderValue.BackgroundColor3 = Color3.fromRGB(80, 255, 80)
+    GreenSliderValue.BorderSizePixel = 0
+    GreenSliderValue.Parent = GreenSlider
+    
+    local GreenSliderValueCorner = Instance.new("UICorner")
+    GreenSliderValueCorner.CornerRadius = UDim.new(0, 6)
+    GreenSliderValueCorner.Parent = GreenSliderValue
+    
+    -- Blue Slider
+    local BlueSliderFrame = Instance.new("Frame")
+    BlueSliderFrame.Name = "BlueSliderFrame"
+    BlueSliderFrame.Size = UDim2.new(0.9, 0, 0, 25)
+    BlueSliderFrame.Position = UDim2.new(0.05, 0, 0, 145)
+    BlueSliderFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+    BlueSliderFrame.BorderSizePixel = 0
+    BlueSliderFrame.Parent = ColorPickerSetting
+    
+    local BlueSliderCorner = Instance.new("UICorner")
+    BlueSliderCorner.CornerRadius = UDim.new(0, 6)
+    BlueSliderCorner.Parent = BlueSliderFrame
+    
+    local BlueSliderOutline = Instance.new("UIStroke")
+    BlueSliderOutline.Name = "BlueSliderOutline"
+    BlueSliderOutline.Color = Color3.fromRGB(60, 60, 100)
+    BlueSliderOutline.Thickness = 1.5
+    BlueSliderOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    BlueSliderOutline.Parent = BlueSliderFrame
+    
+    local BlueSliderLabel = Instance.new("TextLabel")
+    BlueSliderLabel.Name = "BlueSliderLabel"
+    BlueSliderLabel.Size = UDim2.new(0.1, 0, 1, 0)
+    BlueSliderLabel.BackgroundTransparency = 1
+    BlueSliderLabel.Text = "B"
+    BlueSliderLabel.Font = Enum.Font.GothamBold
+    BlueSliderLabel.TextColor3 = Color3.fromRGB(100, 100, 255)
+    BlueSliderLabel.TextSize = 14
+    BlueSliderLabel.Parent = BlueSliderFrame
+    
+    local BlueSlider = Instance.new("TextButton")
+    BlueSlider.Name = "BlueSlider"
+    BlueSlider.Size = UDim2.new(0.8, 0, 1, 0)
+    BlueSlider.Position = UDim2.new(0.15, 0, 0, 0)
+    BlueSlider.BackgroundTransparency = 1
+    BlueSlider.Text = ""
+    BlueSlider.Parent = BlueSliderFrame
+    
+    local BlueSliderValue = Instance.new("Frame")
+    BlueSliderValue.Name = "BlueSliderValue"
+    BlueSliderValue.Size = UDim2.new(0.7, 0, 1, 0)
+    BlueSliderValue.BackgroundColor3 = Color3.fromRGB(80, 80, 255)
+    BlueSliderValue.BorderSizePixel = 0
+    BlueSliderValue.Parent = BlueSlider
+    
+    local BlueSliderValueCorner = Instance.new("UICorner")
+    BlueSliderValueCorner.CornerRadius = UDim.new(0, 6)
+    BlueSliderValueCorner.Parent = BlueSliderValue
+    
     -- Other Settings Section
     local OtherTitle = Instance.new("TextLabel")
     OtherTitle.Name = "OtherTitle"
@@ -1195,38 +1412,23 @@ end)
         end
     end)
     
-    -- Theme selector functionality (simple version)
-    ThemeDropdownButton.MouseButton1Click:Connect(function()
-        -- Cycle through colors: Purple (default) -> Blue -> Red -> Green
-        if ThemeDropdownButton.Text == "Purple" then
-            ThemeDropdownButton.Text = "Blue"
-            ThemeDropdownButton.BackgroundColor3 = Color3.fromRGB(50, 120, 255)
-            ACCENT_COLOR = Color3.fromRGB(50, 120, 255)
-            TOGGLE_ON_COLOR = Color3.fromRGB(50, 120, 255)
-            GRADIENT_COLOR1 = Color3.fromRGB(30, 80, 220)
-            GRADIENT_COLOR2 = Color3.fromRGB(70, 150, 255)
-        elseif ThemeDropdownButton.Text == "Blue" then
-            ThemeDropdownButton.Text = "Red"
-            ThemeDropdownButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-            ACCENT_COLOR = Color3.fromRGB(255, 50, 50)
-            TOGGLE_ON_COLOR = Color3.fromRGB(255, 50, 50)
-            GRADIENT_COLOR1 = Color3.fromRGB(220, 40, 40)
-            GRADIENT_COLOR2 = Color3.fromRGB(255, 70, 70)
-        elseif ThemeDropdownButton.Text == "Red" then
-            ThemeDropdownButton.Text = "Green"
-            ThemeDropdownButton.BackgroundColor3 = Color3.fromRGB(50, 200, 80)
-            ACCENT_COLOR = Color3.fromRGB(50, 200, 80)
-            TOGGLE_ON_COLOR = Color3.fromRGB(50, 200, 80)
-            GRADIENT_COLOR1 = Color3.fromRGB(40, 180, 60)
-            GRADIENT_COLOR2 = Color3.fromRGB(70, 220, 100)
-        else
-            ThemeDropdownButton.Text = "Purple"
-            ThemeDropdownButton.BackgroundColor3 = Color3.fromRGB(180, 50, 255)
-            ACCENT_COLOR = Color3.fromRGB(180, 50, 255)
-            TOGGLE_ON_COLOR = Color3.fromRGB(180, 50, 255)
-            GRADIENT_COLOR1 = Color3.fromRGB(120, 50, 255)
-            GRADIENT_COLOR2 = Color3.fromRGB(200, 50, 255)
-        end
+    -- Function to update theme colors based on RGB values
+    local function updateThemeColors(r, g, b)
+        -- Update color constants
+        ACCENT_COLOR = Color3.fromRGB(r, g, b)
+        TOGGLE_ON_COLOR = Color3.fromRGB(r, g, b)
+        
+        -- Calculate gradient colors (slightly darker and lighter)
+        local darkerR = math.max(0, r * 0.7)
+        local darkerG = math.max(0, g * 0.7)
+        local darkerB = math.max(0, b * 0.7)
+        
+        local lighterR = math.min(255, r * 1.2)
+        local lighterG = math.min(255, g * 1.2)
+        local lighterB = math.min(255, b * 1.2)
+        
+        GRADIENT_COLOR1 = Color3.fromRGB(darkerR, darkerG, darkerB)
+        GRADIENT_COLOR2 = Color3.fromRGB(lighterR, lighterG, lighterB)
         
         -- Update UI elements with new color
         TitleBar.BackgroundColor3 = ACCENT_COLOR
@@ -1244,14 +1446,143 @@ end)
             end
         end
         
-        -- Update save button
+        -- Update save button and other UI elements
         SaveConfigButton.BackgroundColor3 = ACCENT_COLOR
+        ColorDisplay.BackgroundColor3 = ACCENT_COLOR
+        ThemeDropdownButton.Text = "Custom"
+        ThemeDropdownButton.BackgroundColor3 = ACCENT_COLOR
         
-        -- Update notification toggle if enabled
-        if showNotifications then
-            NotificationToggle.BackgroundColor3 = TOGGLE_ON_COLOR
+        -- Update sliders to match the color
+        SettingsTabContent.ScrollingFrame.CanvasPosition = Vector2.new(0, 0)
+    end
+    
+    -- Get RGB values from slider positions
+    local function getRGBFromSliders()
+        local rPercent = RedSliderValue.Size.X.Scale
+        local gPercent = GreenSliderValue.Size.X.Scale
+        local bPercent = BlueSliderValue.Size.X.Scale
+        
+        local r = math.floor(rPercent * 255)
+        local g = math.floor(gPercent * 255)
+        local b = math.floor(bPercent * 255)
+        
+        return r, g, b
+    end
+    
+    -- Function to handle slider dragging
+    local function setupSliderDrag(slider, sliderValue)
+        local dragging = false
+        
+        slider.MouseButton1Down:Connect(function()
+            dragging = true
+            
+            -- Update slider position based on mouse position within the slider
+            local function update()
+                if dragging then
+                    local mousePos = UserInputService:GetMouseLocation()
+                    local sliderPos = slider.AbsolutePosition
+                    local sliderSize = slider.AbsoluteSize
+                    
+                    -- Calculate new scale (0-1) based on mouse position
+                    local scale = math.clamp((mousePos.X - sliderPos.X) / sliderSize.X, 0, 1)
+                    
+                    -- Update slider value size
+                    sliderValue.Size = UDim2.new(scale, 0, 1, 0)
+                    
+                    -- Update the theme with current RGB values
+                    local r, g, b = getRGBFromSliders()
+                    updateThemeColors(r, g, b)
+                end
+            end
+            
+            -- Connect to RenderStepped for smooth dragging
+            local connection
+            connection = RunService.RenderStepped:Connect(update)
+            
+            -- Disconnect when mouse button is released
+            UserInputService.InputEnded:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    dragging = false
+                    if connection then
+                        connection:Disconnect()
+                    end
+                end
+            end)
+            
+            -- Initial update
+            update()
+        end)
+    end
+    
+    -- Set up each RGB slider
+    setupSliderDrag(RedSlider, RedSliderValue)
+    setupSliderDrag(GreenSlider, GreenSliderValue)
+    setupSliderDrag(BlueSlider, BlueSliderValue)
+    
+    -- Set initial RGB values based on accent color
+    local initialR, initialG, initialB = ACCENT_COLOR.R * 255, ACCENT_COLOR.G * 255, ACCENT_COLOR.B * 255
+    RedSliderValue.Size = UDim2.new(initialR / 255, 0, 1, 0)
+    GreenSliderValue.Size = UDim2.new(initialG / 255, 0, 1, 0)
+    BlueSliderValue.Size = UDim2.new(initialB / 255, 0, 1, 0)
+    ColorDisplay.BackgroundColor3 = ACCENT_COLOR
+    
+    -- Theme selector functionality (preset themes)
+    ThemeDropdownButton.MouseButton1Click:Connect(function()
+        -- Cycle through colors: Purple (default) -> Blue -> Red -> Green -> Custom
+        if ThemeDropdownButton.Text == "Purple" then
+            ThemeDropdownButton.Text = "Blue"
+            ThemeDropdownButton.BackgroundColor3 = Color3.fromRGB(50, 120, 255)
+            
+            -- Update color values
+            updateThemeColors(50, 120, 255)
+            
+            -- Update sliders to match
+            RedSliderValue.Size = UDim2.new(50/255, 0, 1, 0)
+            GreenSliderValue.Size = UDim2.new(120/255, 0, 1, 0)
+            BlueSliderValue.Size = UDim2.new(255/255, 0, 1, 0)
+            
+        elseif ThemeDropdownButton.Text == "Blue" then
+            ThemeDropdownButton.Text = "Red"
+            ThemeDropdownButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+            
+            -- Update color values
+            updateThemeColors(255, 50, 50)
+            
+            -- Update sliders to match
+            RedSliderValue.Size = UDim2.new(255/255, 0, 1, 0)
+            GreenSliderValue.Size = UDim2.new(50/255, 0, 1, 0)
+            BlueSliderValue.Size = UDim2.new(50/255, 0, 1, 0)
+            
+        elseif ThemeDropdownButton.Text == "Red" then
+            ThemeDropdownButton.Text = "Green"
+            ThemeDropdownButton.BackgroundColor3 = Color3.fromRGB(50, 200, 80)
+            
+            -- Update color values
+            updateThemeColors(50, 200, 80)
+            
+            -- Update sliders to match
+            RedSliderValue.Size = UDim2.new(50/255, 0, 1, 0)
+            GreenSliderValue.Size = UDim2.new(200/255, 0, 1, 0)
+            BlueSliderValue.Size = UDim2.new(80/255, 0, 1, 0)
+            
+        elseif ThemeDropdownButton.Text == "Green" then
+            ThemeDropdownButton.Text = "Purple"
+            ThemeDropdownButton.BackgroundColor3 = Color3.fromRGB(180, 50, 255)
+            
+            -- Update color values
+            updateThemeColors(180, 50, 255)
+            
+            -- Update sliders to match
+            RedSliderValue.Size = UDim2.new(180/255, 0, 1, 0)
+            GreenSliderValue.Size = UDim2.new(50/255, 0, 1, 0)
+            BlueSliderValue.Size = UDim2.new(255/255, 0, 1, 0)
         end
     end)
+    
+    -- Update notification toggle if enabled
+    if showNotifications then
+        NotificationToggle.BackgroundColor3 = TOGGLE_ON_COLOR
+    end
     
     -- Make toggle key work
     UserInputService.InputBegan:Connect(function(input, gameProcessed)
