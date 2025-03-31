@@ -1,5 +1,6 @@
-local SyferEngHubLibrary = loadstring(game:HttpGet("https://pastebin.com/raw/uPpiSbyk", true))()
+local SyferEngHubLibrary = loadstring(game:HttpGet("https://pastebin.com/raw/WUEX5V02", true))()
 
+-- Create a new instance of the hub
 local hub = SyferEngHubLibrary.Create({
     name = "Syfer-eng Game Hub",
     accentColor = Color3.fromRGB(180, 50, 255),
@@ -13,7 +14,10 @@ local hub = SyferEngHubLibrary.Create({
     gradientColor1 = Color3.fromRGB(120, 50, 255),
     gradientColor2 = Color3.fromRGB(200, 50, 255),
     saveFolder = "SyferGameHub",
-    showExampleToggle = false
+    
+    -- Background blur settings
+    backgroundBlurEnabled = false,   -- Blur effect disabled by default (can only be toggled in settings tab)
+    backgroundBlurStrength = 0,      -- Default blur strength is 0 (can be adjusted in settings up to 56)
 })
 
 hub:CreateToggle(
@@ -90,6 +94,18 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
             notify("Kill Aura: " .. (not currentState and "ON" or "OFF"))
         end
         
+        -- Home key toggles UI visibility with blur effect (already handled)
+        
+        -- NOTE: UI blur can ONLY be toggled via the settings panel
+        -- This is per explicit user requirements - no keyboard shortcuts
+        -- are provided for enabling/disabling blur
+        
+        -- Blur strength can be adjusted using the slider in settings (0-56)
+        -- No keyboard shortcuts are provided for adjusting blur settings
+        
+        -- NOTE: We've removed the ability to modify background darkness since
+        -- the background is now fully transparent with only blur effect
+        
         if input.KeyCode == Enum.KeyCode.End then
             hub:SaveConfig("QuickSave-" .. os.date("%H%M"))
             notify("Config saved as 'QuickSave-" .. os.date("%H%M") .. "'")
@@ -124,6 +140,14 @@ end
 local function customizeMenu()
     task.spawn(function()
         task.wait(1)
+        -- Log the current background blur settings
+        local blurEnabled = hub.isBlurEnabled()
+        local blurStrength = hub.getBlurStrength() or 0 -- Default is 0
+        
+
+        
+        -- Notify user about keyboard controls
+        notify("Press Home to toggle UI")
     end)
 end
 
