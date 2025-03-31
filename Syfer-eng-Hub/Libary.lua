@@ -1,10 +1,9 @@
-
 -- SyferEngHub Library
 -- A modular UI library for Roblox exploits with VapeV4-inspired design
 -- Version 1.0
-
+ 
 local SyferEngHubLibrary = {}
-
+ 
 function SyferEngHubLibrary.Create(options)
     if not game then
         return
@@ -59,7 +58,7 @@ function SyferEngHubLibrary.Create(options)
     if not SyferEngHub.Parent then
         SyferEngHub.Parent = player:WaitForChild("PlayerGui")
     end
-
+ 
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.Size = UDim2.new(0, 650, 0, 400) -- Increased size from 550x350 to 650x400
@@ -69,11 +68,11 @@ MainFrame.BorderSizePixel = 0
 MainFrame.Active = true
 MainFrame.Draggable = false
 MainFrame.Parent = SyferEngHub
-
+ 
 local UICorner = Instance.new("UICorner")
 UICorner.CornerRadius = UDim.new(0, 6)
 UICorner.Parent = MainFrame
-
+ 
 local DropShadow = Instance.new("ImageLabel")
 DropShadow.Name = "DropShadow"
 DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -87,7 +86,7 @@ DropShadow.ImageTransparency = 0.5
 DropShadow.ScaleType = Enum.ScaleType.Slice
 DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
 DropShadow.Parent = MainFrame
-
+ 
 local TitleBar = Instance.new("Frame")
 TitleBar.Name = "TitleBar"
 TitleBar.Size = UDim2.new(1, 0, 0, 30)
@@ -95,11 +94,11 @@ TitleBar.BackgroundColor3 = ACCENT_COLOR
 TitleBar.BorderSizePixel = 0
 TitleBar.Parent = MainFrame
 TitleBar.ZIndex = 2
-
+ 
 local TitleCorner = Instance.new("UICorner")
 TitleCorner.CornerRadius = UDim.new(0, 6)
 TitleCorner.Parent = TitleBar
-
+ 
 local TitleGradient = Instance.new("UIGradient")
 TitleGradient.Color = ColorSequence.new({
     ColorSequenceKeypoint.new(0, GRADIENT_COLOR1),
@@ -107,7 +106,7 @@ TitleGradient.Color = ColorSequence.new({
 })
 TitleGradient.Rotation = 45
 TitleGradient.Parent = TitleBar
-
+ 
 local CornerFix = Instance.new("Frame")
 CornerFix.Name = "CornerFix"
 CornerFix.Size = UDim2.new(1, 0, 0.5, 0)
@@ -116,7 +115,7 @@ CornerFix.BackgroundColor3 = ACCENT_COLOR
 CornerFix.BorderSizePixel = 0
 CornerFix.ZIndex = 1
 CornerFix.Parent = TitleBar
-
+ 
 local CornerFixGradient = Instance.new("UIGradient")
 CornerFixGradient.Color = ColorSequence.new({
     ColorSequenceKeypoint.new(0, GRADIENT_COLOR1),
@@ -124,10 +123,10 @@ CornerFixGradient.Color = ColorSequence.new({
 })
 CornerFixGradient.Rotation = 45
 CornerFixGradient.Parent = CornerFix
-
+ 
 local TitleText = Instance.new("TextLabel")
 TitleText.Name = "TitleText"
-TitleText.Size = UDim2.new(1, -10, 1, 0)
+TitleText.Size = UDim2.new(1, -40, 1, 0) -- -40 to leave space for close button
 TitleText.Position = UDim2.new(0, 10, 0, 0)
 TitleText.BackgroundTransparency = 1
 TitleText.Text = "Syfer-eng Hub"
@@ -137,7 +136,9 @@ TitleText.TextSize = 16
 TitleText.TextXAlignment = Enum.TextXAlignment.Left
 TitleText.ZIndex = 2
 TitleText.Parent = TitleBar
-
+ 
+-- Title text is now taking full width since player count moved to sidebar
+ 
 local CloseButton = Instance.new("TextButton")
 CloseButton.Name = "CloseButton"
 CloseButton.Size = UDim2.new(0, 30, 0, 30)
@@ -149,7 +150,7 @@ CloseButton.TextColor3 = TEXT_COLOR
 CloseButton.TextSize = 16
 CloseButton.ZIndex = 3
 CloseButton.Parent = TitleBar
-
+ 
 local TabBar = Instance.new("Frame")
 TabBar.Name = "TabBar"
 TabBar.Size = UDim2.new(0, 120, 1, -30)
@@ -157,11 +158,11 @@ TabBar.Position = UDim2.new(0, 0, 0, 30)
 TabBar.BackgroundColor3 = SECONDARY_COLOR
 TabBar.BorderSizePixel = 0
 TabBar.Parent = MainFrame
-
+ 
 local TabBarCorner = Instance.new("UICorner")
 TabBarCorner.CornerRadius = UDim.new(0, 6)
 TabBarCorner.Parent = TabBar
-
+ 
 local TabBarGradient = Instance.new("UIGradient")
 TabBarGradient.Color = ColorSequence.new({
     ColorSequenceKeypoint.new(0, SECONDARY_COLOR),
@@ -169,7 +170,7 @@ TabBarGradient.Color = ColorSequence.new({
 })
 TabBarGradient.Rotation = 90
 TabBarGradient.Parent = TabBar
-
+ 
 local ContentFrame = Instance.new("Frame")
 ContentFrame.Name = "ContentFrame"
 ContentFrame.Size = UDim2.new(1, -120, 1, -30)
@@ -177,7 +178,7 @@ ContentFrame.Position = UDim2.new(0, 120, 0, 30)
 ContentFrame.BackgroundColor3 = DEFAULT_COLOR
 ContentFrame.BorderSizePixel = 0
 ContentFrame.Parent = MainFrame
-
+ 
 local ContentFrameGradient = Instance.new("UIGradient")
 ContentFrameGradient.Color = ColorSequence.new({
     ColorSequenceKeypoint.new(0, DEFAULT_COLOR),
@@ -185,7 +186,7 @@ ContentFrameGradient.Color = ColorSequence.new({
 })
 ContentFrameGradient.Rotation = 160
 ContentFrameGradient.Parent = ContentFrame
-
+ 
 local MainTabContent = Instance.new("ScrollingFrame")
 MainTabContent.Name = "MainTabContent"
 MainTabContent.Size = UDim2.new(1, 0, 1, 0)
@@ -197,19 +198,19 @@ MainTabContent.CanvasSize = UDim2.new(0, 0, 0, 0) -- Will be updated dynamically
 MainTabContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
 MainTabContent.Parent = ContentFrame
 MainTabContent.Visible = true
-
+ 
 local ToggleLayout = Instance.new("UIListLayout")
 ToggleLayout.Name = "ToggleLayout"
 ToggleLayout.Padding = UDim.new(0, 10)
 ToggleLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 ToggleLayout.SortOrder = Enum.SortOrder.LayoutOrder
 ToggleLayout.Parent = MainTabContent
-
+ 
 local TogglePadding = Instance.new("UIPadding")
 TogglePadding.PaddingTop = UDim.new(0, 15)
 TogglePadding.PaddingBottom = UDim.new(0, 15)
 TogglePadding.Parent = MainTabContent
-
+ 
 local ConfigTabContent = Instance.new("ScrollingFrame")
 ConfigTabContent.Name = "ConfigTabContent"
 ConfigTabContent.Size = UDim2.new(1, 0, 1, 0)
@@ -221,7 +222,7 @@ ConfigTabContent.CanvasSize = UDim2.new(0, 0, 0, 0) -- Will be updated dynamical
 ConfigTabContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
 ConfigTabContent.Parent = ContentFrame
 ConfigTabContent.Visible = false
-
+ 
 -- Create Settings Tab Content
 local SettingsTabContent = Instance.new("ScrollingFrame")
 SettingsTabContent.Name = "SettingsTabContent"
@@ -234,42 +235,42 @@ SettingsTabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 SettingsTabContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
 SettingsTabContent.Parent = ContentFrame
 SettingsTabContent.Visible = false
-
+ 
 local SettingsLayout = Instance.new("UIListLayout")
 SettingsLayout.Name = "SettingsLayout"
 SettingsLayout.Padding = UDim.new(0, 15)
 SettingsLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 SettingsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 SettingsLayout.Parent = SettingsTabContent
-
+ 
 local SettingsPadding = Instance.new("UIPadding")
 SettingsPadding.PaddingTop = UDim.new(0, 20)
 SettingsPadding.PaddingBottom = UDim.new(0, 20)
 SettingsPadding.Parent = SettingsTabContent
-
+ 
 local ConfigLayout = Instance.new("UIListLayout")
 ConfigLayout.Name = "ConfigLayout"
 ConfigLayout.Padding = UDim.new(0, 10)
 ConfigLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 ConfigLayout.SortOrder = Enum.SortOrder.LayoutOrder
 ConfigLayout.Parent = ConfigTabContent
-
+ 
 local ConfigPadding = Instance.new("UIPadding")
 ConfigPadding.PaddingTop = UDim.new(0, 15)
 ConfigPadding.PaddingBottom = UDim.new(0, 15)
 ConfigPadding.Parent = ConfigTabContent
-
+ 
 local ConfigInputArea = Instance.new("Frame")
 ConfigInputArea.Name = "ConfigInputArea"
 ConfigInputArea.Size = UDim2.new(0.9, 0, 0, 40)
 ConfigInputArea.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 ConfigInputArea.BorderSizePixel = 0
 ConfigInputArea.Parent = ConfigTabContent
-
+ 
 local ConfigInputCorner = Instance.new("UICorner")
 ConfigInputCorner.CornerRadius = UDim.new(0, 6)
 ConfigInputCorner.Parent = ConfigInputArea
-
+ 
 -- Add outline to Config Input Area
 local ConfigInputOutline = Instance.new("UIStroke")
 ConfigInputOutline.Name = "ConfigInputOutline"
@@ -277,7 +278,7 @@ ConfigInputOutline.Color = Color3.fromRGB(80, 80, 100)
 ConfigInputOutline.Thickness = 1.5
 ConfigInputOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 ConfigInputOutline.Parent = ConfigInputArea
-
+ 
 local ConfigInput = Instance.new("TextBox")
 ConfigInput.Name = "ConfigInput"
 ConfigInput.Size = UDim2.new(0.7, 0, 1, 0)
@@ -289,7 +290,7 @@ ConfigInput.TextColor3 = TEXT_COLOR
 ConfigInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
 ConfigInput.TextSize = 14
 ConfigInput.Parent = ConfigInputArea
-
+ 
 local SaveConfigButton = Instance.new("TextButton")
 SaveConfigButton.Name = "SaveConfigButton"
 SaveConfigButton.Size = UDim2.new(0.3, 0, 1, 0)
@@ -301,11 +302,11 @@ SaveConfigButton.Font = Enum.Font.GothamBold
 SaveConfigButton.TextColor3 = TEXT_COLOR
 SaveConfigButton.TextSize = 14
 SaveConfigButton.Parent = ConfigInputArea
-
+ 
 local SaveButtonCorner = Instance.new("UICorner")
 SaveButtonCorner.CornerRadius = UDim.new(0, 6)
 SaveButtonCorner.Parent = SaveConfigButton
-
+ 
 -- Add outline to Save Config button
 local SaveButtonOutline = Instance.new("UIStroke")
 SaveButtonOutline.Name = "SaveButtonOutline"
@@ -313,7 +314,7 @@ SaveButtonOutline.Color = Color3.fromRGB(100, 30, 150)
 SaveButtonOutline.Thickness = 1
 SaveButtonOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 SaveButtonOutline.Parent = SaveConfigButton
-
+ 
 local ConfigListTitle = Instance.new("TextLabel")
 ConfigListTitle.Name = "ConfigListTitle"
 ConfigListTitle.Size = UDim2.new(0.9, 0, 0, 30)
@@ -323,18 +324,18 @@ ConfigListTitle.Font = Enum.Font.GothamBold
 ConfigListTitle.TextColor3 = TEXT_COLOR
 ConfigListTitle.TextSize = 16
 ConfigListTitle.Parent = ConfigTabContent
-
+ 
 local ConfigListContainer = Instance.new("Frame")
 ConfigListContainer.Name = "ConfigListContainer"
 ConfigListContainer.Size = UDim2.new(0.9, 0, 0, 200)
 ConfigListContainer.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 ConfigListContainer.BorderSizePixel = 0
 ConfigListContainer.Parent = ConfigTabContent
-
+ 
 local ConfigListCorner = Instance.new("UICorner")
 ConfigListCorner.CornerRadius = UDim.new(0, 6)
 ConfigListCorner.Parent = ConfigListContainer
-
+ 
 -- Add outline to Config List Container
 local ConfigListOutline = Instance.new("UIStroke")
 ConfigListOutline.Name = "ConfigListOutline"
@@ -342,7 +343,7 @@ ConfigListOutline.Color = Color3.fromRGB(80, 80, 100)
 ConfigListOutline.Thickness = 1.5
 ConfigListOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 ConfigListOutline.Parent = ConfigListContainer
-
+ 
 local ConfigItems = Instance.new("ScrollingFrame")
 ConfigItems.Name = "ConfigItems"
 ConfigItems.Size = UDim2.new(1, 0, 1, 0)
@@ -353,21 +354,21 @@ ConfigItems.ScrollBarImageColor3 = ACCENT_COLOR
 ConfigItems.CanvasSize = UDim2.new(0, 0, 0, 0) -- Will be updated dynamically
 ConfigItems.AutomaticCanvasSize = Enum.AutomaticSize.Y
 ConfigItems.Parent = ConfigListContainer
-
+ 
 local ConfigItemsLayout = Instance.new("UIListLayout")
 ConfigItemsLayout.Name = "ConfigItemsLayout"
 ConfigItemsLayout.Padding = UDim.new(0, 5)
 ConfigItemsLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 ConfigItemsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 ConfigItemsLayout.Parent = ConfigItems
-
+ 
 local ConfigItemsPadding = Instance.new("UIPadding")
 ConfigItemsPadding.PaddingTop = UDim.new(0, 10)
 ConfigItemsPadding.PaddingBottom = UDim.new(0, 10)
 ConfigItemsPadding.PaddingLeft = UDim.new(0, 10)
 ConfigItemsPadding.PaddingRight = UDim.new(0, 10)
 ConfigItemsPadding.Parent = ConfigItems
-
+ 
 local function createTabButton(name, position)
     local TabButton = Instance.new("TextButton")
     TabButton.Name = name .. "Tab"
@@ -446,24 +447,74 @@ local function createTabButton(name, position)
     
     return TabButton
 end
-
-local MainTab = createTabButton("Main", 0)
-local ConfigTab = createTabButton("Config", 40)
-local SettingsTab = createTabButton("Settings", 80)
-
+ 
+-- Create user profile picture display at the top of the TabBar
+local UserProfileFrame = Instance.new("Frame")
+UserProfileFrame.Name = "UserProfileFrame"
+UserProfileFrame.Size = UDim2.new(1, 0, 0, 80) -- Same width as TabBar, height matches button height × 2
+UserProfileFrame.Position = UDim2.new(0, 0, 0, 0)
+UserProfileFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+UserProfileFrame.BorderSizePixel = 0
+UserProfileFrame.ZIndex = 2
+UserProfileFrame.Parent = TabBar
+ 
+-- Profile frame outline
+local ProfileOutline = Instance.new("UIStroke")
+ProfileOutline.Name = "ProfileOutline"
+ProfileOutline.Color = Color3.fromRGB(60, 60, 80)
+ProfileOutline.Thickness = 1
+ProfileOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+ProfileOutline.Parent = UserProfileFrame
+ 
+-- Profile frame corner
+local ProfileCorner = Instance.new("UICorner")
+ProfileCorner.CornerRadius = UDim.new(0, 6)
+ProfileCorner.Parent = UserProfileFrame
+ 
+-- User avatar image
+local UserAvatar = Instance.new("ImageLabel")
+UserAvatar.Name = "UserAvatar"
+UserAvatar.Size = UDim2.new(0, 60, 0, 60)
+UserAvatar.Position = UDim2.new(0.5, -30, 0, 10) -- Centered horizontally, 10px from top
+UserAvatar.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
+UserAvatar.BackgroundTransparency = 0
+UserAvatar.BorderSizePixel = 0
+UserAvatar.ZIndex = 3
+UserAvatar.Parent = UserProfileFrame
+ 
+-- Avatar corner rounding
+local AvatarCorner = Instance.new("UICorner")
+AvatarCorner.CornerRadius = UDim.new(1, 0) -- Make it circular
+AvatarCorner.Parent = UserAvatar
+ 
+-- Avatar outline
+local AvatarOutline = Instance.new("UIStroke")
+AvatarOutline.Name = "AvatarOutline"
+AvatarOutline.Color = ACCENT_COLOR
+AvatarOutline.Thickness = 2
+AvatarOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+AvatarOutline.Parent = UserAvatar
+ 
+-- Avatar will be loaded in the updatePlayerInfo function
+ 
+-- Create tab buttons with adjusted positions to account for profile picture
+local MainTab = createTabButton("Main", 85) -- Start after the profile picture
+local ConfigTab = createTabButton("Config", 125)
+local SettingsTab = createTabButton("Settings", 165)
+ 
 local function makeDraggable(dragFrame, mainFrame)
     local dragToggle = nil
     local dragSpeed = 0.1
     local dragInput = nil
     local dragStart = nil
     local dragPos = nil
-
+ 
     local function updateInput(input)
         local delta = input.Position - dragStart
         local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
         mainFrame.Position = position
     end
-
+ 
     dragFrame.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragToggle = true
@@ -476,89 +527,84 @@ local function makeDraggable(dragFrame, mainFrame)
             end)
         end
     end)
-
+ 
     dragFrame.InputChanged:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
             dragInput = input
         end
     end)
-
+ 
     UserInputService.InputChanged:Connect(function(input)
         if input == dragInput and dragToggle then
             updateInput(input)
         end
     end)
 end
-
+ 
 makeDraggable(TitleBar, MainFrame)
-
+ 
 CloseButton.MouseButton1Click:Connect(function()
     SyferEngHub:Destroy()
 end)
-
--- Create footer with player information
-local FooterFrame = Instance.new("Frame")
-FooterFrame.Name = "FooterFrame"
-FooterFrame.Size = UDim2.new(1, -120, 0, 25) -- Same width as content frame, 25px height
-FooterFrame.Position = UDim2.new(0, 120, 1, -25) -- Position at bottom of main frame
-FooterFrame.BackgroundColor3 = SECONDARY_COLOR
-FooterFrame.BorderSizePixel = 0
-FooterFrame.ZIndex = 2
-FooterFrame.Parent = MainFrame
-
-local FooterOutline = Instance.new("UIStroke")
-FooterOutline.Name = "FooterOutline"
-FooterOutline.Color = Color3.fromRGB(60, 60, 80)
-FooterOutline.Thickness = 1
-FooterOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-FooterOutline.Parent = FooterFrame
-
--- Player username on the left
-local UsernameLabel = Instance.new("TextLabel")
-UsernameLabel.Name = "UsernameLabel"
-UsernameLabel.Size = UDim2.new(0.4, 0, 1, 0)
-UsernameLabel.Position = UDim2.new(0, 10, 0, 0)
-UsernameLabel.BackgroundTransparency = 1
-UsernameLabel.Font = Enum.Font.Gotham
-UsernameLabel.TextColor3 = TEXT_COLOR
-UsernameLabel.TextSize = 12
-UsernameLabel.TextXAlignment = Enum.TextXAlignment.Left
-UsernameLabel.ZIndex = 3
-UsernameLabel.Parent = FooterFrame
-
--- Player count on the right
+ 
+-- Player count display above username in sidebar
 local PlayerCountLabel = Instance.new("TextLabel")
 PlayerCountLabel.Name = "PlayerCountLabel"
-PlayerCountLabel.Size = UDim2.new(0.4, 0, 1, 0)
-PlayerCountLabel.Position = UDim2.new(0.6, -10, 0, 0)
+PlayerCountLabel.Size = UDim2.new(1, 0, 0, 25) -- Full width, 25px height
+PlayerCountLabel.Position = UDim2.new(0, 0, 1, -50) -- Position 25px above username
 PlayerCountLabel.BackgroundTransparency = 1
 PlayerCountLabel.Font = Enum.Font.Gotham
 PlayerCountLabel.TextColor3 = TEXT_COLOR
 PlayerCountLabel.TextSize = 12
-PlayerCountLabel.TextXAlignment = Enum.TextXAlignment.Right
+PlayerCountLabel.TextXAlignment = Enum.TextXAlignment.Center
 PlayerCountLabel.ZIndex = 3
-PlayerCountLabel.Parent = FooterFrame
-
+PlayerCountLabel.Parent = TabBar
+ 
+-- Username display in the sidebar (full left)
+local UsernameLabel = Instance.new("TextLabel")
+UsernameLabel.Name = "UsernameLabel"
+UsernameLabel.Size = UDim2.new(1, 0, 0, 25) -- Full width, 25px height
+UsernameLabel.Position = UDim2.new(0, 0, 1, -25) -- Position at bottom of TabBar
+UsernameLabel.BackgroundTransparency = 1
+UsernameLabel.Font = Enum.Font.Gotham
+UsernameLabel.TextColor3 = TEXT_COLOR
+UsernameLabel.TextSize = 12
+UsernameLabel.TextXAlignment = Enum.TextXAlignment.Center
+UsernameLabel.ZIndex = 3
+UsernameLabel.Parent = TabBar
+ 
 -- Update player information
 local function updatePlayerInfo()
     local username = player.Name or "Unknown"
     local playerCount = #Players:GetPlayers()
     
-    UsernameLabel.Text = "User: " .. username
+    -- Update username in sidebar
+    UsernameLabel.Text = username
+    
+    -- Update player count in sidebar
     PlayerCountLabel.Text = "Players: " .. playerCount
+    
+    -- Update player avatar if it wasn't loaded or changed
+    pcall(function()
+        local userId = player.UserId
+        local thumbType = Enum.ThumbnailType.HeadShot
+        local thumbSize = Enum.ThumbnailSize.Size420x420
+        local content = Players:GetUserThumbnailAsync(userId, thumbType, thumbSize)
+        UserAvatar.Image = content
+    end)
 end
-
+ 
 -- Initial update
 updatePlayerInfo()
-
--- Periodically update player count (every 5 seconds)
+ 
+-- Periodically update player count and avatar (every 5 seconds)
 spawn(function()
     while SyferEngHub.Parent do
         updatePlayerInfo()
         wait(5)
     end
 end)
-
+ 
 local function createToggleButton(name, onScript, offScript, isEnabled)
     -- Default to disabled if not specified
     isEnabled = isEnabled or false
@@ -690,7 +736,7 @@ local function createToggleButton(name, onScript, offScript, isEnabled)
     
     return ToggleButton
 end
-
+ 
 local function saveConfig(configName)
     if configName == "" then return end
     
@@ -749,7 +795,7 @@ local function saveConfig(configName)
     -- Refresh the config list
     refreshConfigList()
 end
-
+ 
 local function loadConfig(configName)
     -- Read the configuration file
     local success, jsonConfig = pcall(function()
@@ -892,7 +938,7 @@ local function loadConfig(configName)
         end
     end
 end
-
+ 
 local function deleteConfig(configName)
     pcall(function()
         delfile(SAVE_FOLDER .. "/" .. configName .. CONFIG_EXTENSION)
@@ -901,7 +947,7 @@ local function deleteConfig(configName)
     -- Refresh the config list
     refreshConfigList()
 end
-
+ 
 function refreshConfigList()
     -- Clear existing config items
     for _, child in pairs(ConfigItems:GetChildren()) do
@@ -1066,7 +1112,7 @@ function refreshConfigList()
         NoConfigsLabel.Parent = ConfigItems
     end
 end
-
+ 
 SaveConfigButton.MouseButton1Click:Connect(function()
     local configName = ConfigInput.Text
     if configName and configName ~= "" then
@@ -1074,16 +1120,16 @@ SaveConfigButton.MouseButton1Click:Connect(function()
         ConfigInput.Text = ""
     end
 end)
-
+ 
 SaveConfigButton.MouseEnter:Connect(function()
     SaveConfigButton.BackgroundColor3 = Color3.fromRGB(100, 40, 220)
 end)
-
+ 
 SaveConfigButton.MouseLeave:Connect(function()
     SaveConfigButton.BackgroundColor3 = ACCENT_COLOR
 end)
-
-
+ 
+ 
     refreshConfigList()
     
     -- Initialize Settings tab content
@@ -1801,7 +1847,7 @@ end)
             SyferEngHub.Enabled = not SyferEngHub.Enabled
         end
     end)
-
+ 
     -- Hub Methods
     local hubMethods = {}
     
@@ -1910,7 +1956,7 @@ end)
     
     return hubMethods
 end
-
+ 
 -- Example usage:
 --[[
 local syferHub = SyferEngHubLibrary.Create({
@@ -1920,14 +1966,15 @@ local syferHub = SyferEngHubLibrary.Create({
     saveFolder = "MyHubConfigs",                  -- Custom save folder
     showExampleToggle = false                     -- Don't show example toggle
 })
-
+ 
 -- Create toggles
 syferHub:CreateToggle("ESP", "https://raw.githubusercontent.com/myrepo/esp.lua", "https://raw.githubusercontent.com/myrepo/disable_esp.lua")
 syferHub:CreateToggle("Speed", "https://raw.githubusercontent.com/myrepo/speed.lua", "https://raw.githubusercontent.com/myrepo/disable_speed.lua")
-
+ 
 -- You can save/load configs
 syferHub:SaveConfig("MyConfig")
 syferHub:LoadConfig("MyConfig")
 ]]
-
+ 
 return SyferEngHubLibrary
+ 
