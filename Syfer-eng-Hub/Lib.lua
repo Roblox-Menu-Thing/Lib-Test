@@ -630,10 +630,45 @@ end
 local function saveConfig(configName)
     if configName == "" then return end
     
-    -- Create a configuration table with toggle states
-    local config = {}
+    -- Create a configuration table with toggle states and all settings
+    local config = {
+        toggles = {},
+        settings = {
+            -- Save theme colors
+            accentColor = {
+                r = ACCENT_COLOR.R * 255,
+                g = ACCENT_COLOR.G * 255,
+                b = ACCENT_COLOR.B * 255
+            },
+            gradientColor1 = {
+                r = GRADIENT_COLOR1.R * 255,
+                g = GRADIENT_COLOR1.G * 255,
+                b = GRADIENT_COLOR1.B * 255
+            },
+            gradientColor2 = {
+                r = GRADIENT_COLOR2.R * 255,
+                g = GRADIENT_COLOR2.G * 255,
+                b = GRADIENT_COLOR2.B * 255
+            },
+            toggleOnColor = {
+                r = TOGGLE_ON_COLOR.R * 255,
+                g = TOGGLE_ON_COLOR.G * 255,
+                b = TOGGLE_ON_COLOR.B * 255
+            },
+            -- Save the current theme name
+            themeName = ThemeDropdownButton.Text,
+            -- Save toggle key
+            toggleKeyCode = tostring(toggleKeybind)
+        }
+    }
+    
+    -- Save all toggle buttons and their states
     for name, info in pairs(toggleButtons) do
-        config[name] = info.enabled
+        config.toggles[name] = {
+            enabled = info.enabled,
+            onScript = info.onScript,
+            offScript = info.offScript
+        }
     end
     
     -- Convert to JSON
@@ -661,21 +696,133 @@ local function loadConfig(configName)
         -- Parse the JSON
         local config = HttpService:JSONDecode(jsonConfig)
         
-        -- Apply the configuration
-        for name, enabled in pairs(config) do
-            if toggleButtons[name] then
-                local toggleInfo = toggleButtons[name]
-                toggleInfo.enabled = enabled
+        -- Check if it's the new config format (with toggles and settings sections)
+        if config.toggles then
+            -- Load toggle states
+            for name, toggleData in pairs(config.toggles) do
+                -- Check if the toggle exists
+                if toggleButtons[name] then
+                    local toggleInfo = toggleButtons[name]
+                    toggleInfo.enabled = toggleData.enabled
+                    
+                    -- Also update the scripts in case they've changed
+                    if toggleData.onScript then 
+                        toggleInfo.onScript = toggleData.onScript
+                    end
+                    if toggleData.offScript then 
+                        toggleInfo.offScript = toggleData.offScript
+                    end
+                    
+                    -- Update visual appearance
+                    toggleInfo.indicator.BackgroundColor3 = toggleData.enabled and TOGGLE_ON_COLOR or TOGGLE_OFF_COLOR
+                    toggleInfo.knob.Position = toggleData.enabled and UDim2.new(0.6, 0, 0.5, -8) or UDim2.new(0, 2, 0.5, -8)
+                    
+                    -- Execute the appropriate script
+                    if toggleData.enabled then
+                        pcall(function()
+                            loadstring(game:HttpGet(toggleInfo.onScript, true))()
+                        end)
+                    end
+                end
+            end
+            
+            -- Load settings if they exist
+            if config.settings then
+                local settings = config.settings
                 
-                -- Update visual appearance
-                toggleInfo.indicator.BackgroundColor3 = enabled and TOGGLE_ON_COLOR or TOGGLE_OFF_COLOR
-                toggleInfo.knob.Position = enabled and UDim2.new(0.6, 0, 0.5, -8) or UDim2.new(0, 2, 0.5, -8)
+                -- Update colors if present
+                if settings.accentColor then
+                    local ac = settings.accentColor
+                    ACCENT_COLOR = Color3.fromRGB(ac.r, ac.g, ac.b)
+                end
                 
-                -- Execute the appropriate script
-                if enabled then
-                    pcall(function()
-                        loadstring(game:HttpGet(toggleInfo.onScript, true))()
-                    end)
+                if settings.gradientColor1 then
+                    local gc1 = settings.gradientColor1
+                    GRADIENT_COLOR1 = Color3.fromRGB(gc1.r, gc1.g, gc1.b)
+                end
+                
+                if settings.gradientColor2 then
+                    local gc2 = settings.gradientColor2
+                    GRADIENT_COLOR2 = Color3.fromRGB(gc2.r, gc2.g, gc2.b)
+                end
+                
+                if settings.toggleOnColor then
+                    local toc = settings.toggleOnColor
+                    TOGGLE_ON_COLOR = Color3.fromRGB(toc.r, toc.g, toc.b)
+                end
+                
+                -- Update theme dropdown text if present
+                if settings.themeName and ThemeDropdownButton then
+                    ThemeDropdownButton.Text = settings.themeName
+                    ThemeDropdownButton.BackgroundColor3 = ACCENT_COLOR
+                end
+                
+                -- Update toggle key if present
+                if settings.toggleKeyCode then
+                    -- Convert the stored string back to KeyCode
+                    for _, keyCode in pairs(Enum.KeyCode:GetEnumItems()) do
+                        if tostring(keyCode) == settings.toggleKeyCode then
+                            toggleKeybind = keyCode
+                            KeySelectorButton.Text = keyCode.Name
+                            break
+                        end
+                    end
+                end
+                
+                -- Update UI with the new colors
+                -- Title bar
+                TitleBar.BackgroundColor3 = ACCENT_COLOR
+                TitleGradient.Color = ColorSequence.new({
+                    ColorSequenceKeypoint.new(0, GRADIENT_COLOR1),
+                    ColorSequenceKeypoint.new(1, GRADIENT_COLOR2)
+                })
+                CornerFix.BackgroundColor3 = ACCENT_COLOR
+                CornerFixGradient.Color = ColorSequence.new({
+                    ColorSequenceKeypoint.new(0, GRADIENT_COLOR1),
+                    ColorSequenceKeypoint.new(1, GRADIENT_COLOR2)
+                })
+                
+                -- Update scrollbar colors
+                MainTabContent.ScrollBarImageColor3 = ACCENT_COLOR
+                ConfigTabContent.ScrollBarImageColor3 = ACCENT_COLOR
+                SettingsTabContent.ScrollBarImageColor3 = ACCENT_COLOR
+                ConfigItems.ScrollBarImageColor3 = ACCENT_COLOR
+                
+                -- Update button colors
+                SaveConfigButton.BackgroundColor3 = ACCENT_COLOR
+                
+                -- Update tab indicator colors
+                for _, button in pairs(TabBar:GetChildren()) do
+                    if button:IsA("TextButton") and button:FindFirstChild("TabIndicator") then
+                        button.TabIndicator.BackgroundColor3 = ACCENT_COLOR
+                        if button.TextColor3 ~= TEXT_COLOR then
+                            button.TextColor3 = ACCENT_COLOR
+                        end
+                    end
+                end
+                
+                -- Update toggle indicators for all toggles
+                for _, toggleInfo in pairs(toggleButtons) do
+                    toggleInfo.indicator.BackgroundColor3 = toggleInfo.enabled and TOGGLE_ON_COLOR or TOGGLE_OFF_COLOR
+                end
+            end
+        else
+            -- Handle legacy config format (if needed)
+            for name, enabled in pairs(config) do
+                if toggleButtons[name] then
+                    local toggleInfo = toggleButtons[name]
+                    toggleInfo.enabled = enabled
+                    
+                    -- Update visual appearance
+                    toggleInfo.indicator.BackgroundColor3 = enabled and TOGGLE_ON_COLOR or TOGGLE_OFF_COLOR
+                    toggleInfo.knob.Position = enabled and UDim2.new(0.6, 0, 0.5, -8) or UDim2.new(0, 2, 0.5, -8)
+                    
+                    -- Execute the appropriate script
+                    if enabled then
+                        pcall(function()
+                            loadstring(game:HttpGet(toggleInfo.onScript, true))()
+                        end)
+                    end
                 end
             end
         end
