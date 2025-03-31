@@ -127,7 +127,7 @@ CornerFixGradient.Parent = CornerFix
 
 local TitleText = Instance.new("TextLabel")
 TitleText.Name = "TitleText"
-TitleText.Size = UDim2.new(1, -10, 1, 0)
+TitleText.Size = UDim2.new(1, -40, 1, 0) -- -40 to leave space for close button
 TitleText.Position = UDim2.new(0, 10, 0, 0)
 TitleText.BackgroundTransparency = 1
 TitleText.Text = "Syfer-eng Hub"
@@ -137,6 +137,8 @@ TitleText.TextSize = 16
 TitleText.TextXAlignment = Enum.TextXAlignment.Left
 TitleText.ZIndex = 2
 TitleText.Parent = TitleBar
+
+-- Title text is now taking full width since player count moved to sidebar
 
 local CloseButton = Instance.new("TextButton")
 CloseButton.Name = "CloseButton"
@@ -447,9 +449,59 @@ local function createTabButton(name, position)
     return TabButton
 end
 
-local MainTab = createTabButton("Main", 0)
-local ConfigTab = createTabButton("Config", 40)
-local SettingsTab = createTabButton("Settings", 80)
+-- Create user profile picture display at the top of the TabBar
+local UserProfileFrame = Instance.new("Frame")
+UserProfileFrame.Name = "UserProfileFrame"
+UserProfileFrame.Size = UDim2.new(1, 0, 0, 80) -- Same width as TabBar, height matches button height × 2
+UserProfileFrame.Position = UDim2.new(0, 0, 0, 0)
+UserProfileFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+UserProfileFrame.BorderSizePixel = 0
+UserProfileFrame.ZIndex = 2
+UserProfileFrame.Parent = TabBar
+
+-- Profile frame outline
+local ProfileOutline = Instance.new("UIStroke")
+ProfileOutline.Name = "ProfileOutline"
+ProfileOutline.Color = Color3.fromRGB(60, 60, 80)
+ProfileOutline.Thickness = 1
+ProfileOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+ProfileOutline.Parent = UserProfileFrame
+
+-- Profile frame corner
+local ProfileCorner = Instance.new("UICorner")
+ProfileCorner.CornerRadius = UDim.new(0, 6)
+ProfileCorner.Parent = UserProfileFrame
+
+-- User avatar image
+local UserAvatar = Instance.new("ImageLabel")
+UserAvatar.Name = "UserAvatar"
+UserAvatar.Size = UDim2.new(0, 60, 0, 60)
+UserAvatar.Position = UDim2.new(0.5, -30, 0, 10) -- Centered horizontally, 10px from top
+UserAvatar.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
+UserAvatar.BackgroundTransparency = 0
+UserAvatar.BorderSizePixel = 0
+UserAvatar.ZIndex = 3
+UserAvatar.Parent = UserProfileFrame
+
+-- Avatar corner rounding
+local AvatarCorner = Instance.new("UICorner")
+AvatarCorner.CornerRadius = UDim.new(1, 0) -- Make it circular
+AvatarCorner.Parent = UserAvatar
+
+-- Avatar outline
+local AvatarOutline = Instance.new("UIStroke")
+AvatarOutline.Name = "AvatarOutline"
+AvatarOutline.Color = ACCENT_COLOR
+AvatarOutline.Thickness = 2
+AvatarOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+AvatarOutline.Parent = UserAvatar
+
+-- Avatar will be loaded in the updatePlayerInfo function
+
+-- Create tab buttons with adjusted positions to account for profile picture
+local MainTab = createTabButton("Main", 85) -- Start after the profile picture
+local ConfigTab = createTabButton("Config", 125)
+local SettingsTab = createTabButton("Settings", 165)
 
 local function makeDraggable(dragFrame, mainFrame)
     local dragToggle = nil
@@ -496,62 +548,57 @@ CloseButton.MouseButton1Click:Connect(function()
     SyferEngHub:Destroy()
 end)
 
--- Create footer with player information
-local FooterFrame = Instance.new("Frame")
-FooterFrame.Name = "FooterFrame"
-FooterFrame.Size = UDim2.new(1, -120, 0, 25) -- Same width as content frame, 25px height
-FooterFrame.Position = UDim2.new(0, 120, 1, -25) -- Position at bottom of main frame
-FooterFrame.BackgroundColor3 = SECONDARY_COLOR
-FooterFrame.BorderSizePixel = 0
-FooterFrame.ZIndex = 2
-FooterFrame.Parent = MainFrame
-
-local FooterOutline = Instance.new("UIStroke")
-FooterOutline.Name = "FooterOutline"
-FooterOutline.Color = Color3.fromRGB(60, 60, 80)
-FooterOutline.Thickness = 1
-FooterOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-FooterOutline.Parent = FooterFrame
-
--- Player username on the left
-local UsernameLabel = Instance.new("TextLabel")
-UsernameLabel.Name = "UsernameLabel"
-UsernameLabel.Size = UDim2.new(0.4, 0, 1, 0)
-UsernameLabel.Position = UDim2.new(0, 10, 0, 0)
-UsernameLabel.BackgroundTransparency = 1
-UsernameLabel.Font = Enum.Font.Gotham
-UsernameLabel.TextColor3 = TEXT_COLOR
-UsernameLabel.TextSize = 12
-UsernameLabel.TextXAlignment = Enum.TextXAlignment.Left
-UsernameLabel.ZIndex = 3
-UsernameLabel.Parent = FooterFrame
-
--- Player count on the right
+-- Player count display above username in sidebar
 local PlayerCountLabel = Instance.new("TextLabel")
 PlayerCountLabel.Name = "PlayerCountLabel"
-PlayerCountLabel.Size = UDim2.new(0.4, 0, 1, 0)
-PlayerCountLabel.Position = UDim2.new(0.6, -10, 0, 0)
+PlayerCountLabel.Size = UDim2.new(1, 0, 0, 25) -- Full width, 25px height
+PlayerCountLabel.Position = UDim2.new(0, 0, 1, -50) -- Position 25px above username
 PlayerCountLabel.BackgroundTransparency = 1
 PlayerCountLabel.Font = Enum.Font.Gotham
 PlayerCountLabel.TextColor3 = TEXT_COLOR
 PlayerCountLabel.TextSize = 12
-PlayerCountLabel.TextXAlignment = Enum.TextXAlignment.Right
+PlayerCountLabel.TextXAlignment = Enum.TextXAlignment.Center
 PlayerCountLabel.ZIndex = 3
-PlayerCountLabel.Parent = FooterFrame
+PlayerCountLabel.Parent = TabBar
+
+-- Username display in the sidebar (full left)
+local UsernameLabel = Instance.new("TextLabel")
+UsernameLabel.Name = "UsernameLabel"
+UsernameLabel.Size = UDim2.new(1, 0, 0, 25) -- Full width, 25px height
+UsernameLabel.Position = UDim2.new(0, 0, 1, -25) -- Position at bottom of TabBar
+UsernameLabel.BackgroundTransparency = 1
+UsernameLabel.Font = Enum.Font.Gotham
+UsernameLabel.TextColor3 = TEXT_COLOR
+UsernameLabel.TextSize = 12
+UsernameLabel.TextXAlignment = Enum.TextXAlignment.Center
+UsernameLabel.ZIndex = 3
+UsernameLabel.Parent = TabBar
 
 -- Update player information
 local function updatePlayerInfo()
     local username = player.Name or "Unknown"
     local playerCount = #Players:GetPlayers()
     
-    UsernameLabel.Text = "User: " .. username
+    -- Update username in sidebar
+    UsernameLabel.Text = username
+    
+    -- Update player count in sidebar
     PlayerCountLabel.Text = "Players: " .. playerCount
+    
+    -- Update player avatar if it wasn't loaded or changed
+    pcall(function()
+        local userId = player.UserId
+        local thumbType = Enum.ThumbnailType.HeadShot
+        local thumbSize = Enum.ThumbnailSize.Size420x420
+        local content = Players:GetUserThumbnailAsync(userId, thumbType, thumbSize)
+        UserAvatar.Image = content
+    end)
 end
 
 -- Initial update
 updatePlayerInfo()
 
--- Periodically update player count (every 5 seconds)
+-- Periodically update player count and avatar (every 5 seconds)
 spawn(function()
     while SyferEngHub.Parent do
         updatePlayerInfo()
