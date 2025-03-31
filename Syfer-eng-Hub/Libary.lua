@@ -1,8 +1,4 @@
-
--- SyferEngHub Library
--- A modular UI library for Roblox exploits with VapeV4-inspired design
--- Version 1.0
-
+-- Version 1.1
 local SyferEngHubLibrary = {}
 
 function SyferEngHubLibrary.Create(options)
