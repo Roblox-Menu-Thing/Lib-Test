@@ -7,7 +7,7 @@
 ]]
 
 -- Load the SyferEngHub library
-local SyferEngHubLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/Roblox-Menu-Thing/Lib-Test/refs/heads/main/Syfer-eng-Hub/Libary.lua", true))()
+local SyferEngHubLibrary = loadstring(game:HttpGet("https://pastebin.com/raw/uPpiSbyk", true))()
 
 -- Create a new instance of the hub with custom styling
 local hub = SyferEngHubLibrary.Create({
