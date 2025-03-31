@@ -1,27 +1,19 @@
-
--- SyferEngHub Library
--- A modular UI library for Roblox exploits with VapeV4-inspired design
--- Version 1.0
-
 local SyferEngHubLibrary = {}
 
 function SyferEngHubLibrary.Create(options)
     if not game then
         return
     end
-    
-    -- Initialize services
+
     local Players = game:GetService("Players")
     local CoreGui = game:GetService("CoreGui")
     local HttpService = game:GetService("HttpService")
     local UserInputService = game:GetService("UserInputService")
     local TweenService = game:GetService("TweenService")
     local RunService = game:GetService("RunService")
-    
-    -- Default options
+
     options = options or {}
-    
-    -- Set up themes and configurations
+
     local player = Players.LocalPlayer
     local username = player and player.Name or "Default"
     local SAVE_FOLDER = options.saveFolder or ("SyferEngHub/" .. username)
@@ -36,8 +28,7 @@ function SyferEngHubLibrary.Create(options)
     local TOGGLE_OFF_COLOR = options.toggleOffColor or Color3.fromRGB(50, 50, 60)
     local GRADIENT_COLOR1 = options.gradientColor1 or Color3.fromRGB(120, 50, 255)
     local GRADIENT_COLOR2 = options.gradientColor2 or Color3.fromRGB(200, 50, 255)
-    
-    -- Initialize local variables
+
     local dragging = false
     local dragInput
     local dragStart
@@ -45,14 +36,12 @@ function SyferEngHubLibrary.Create(options)
     local configsList = {}
     local toggleButtons = {}
     local currentTab = "Main"
-    
-    -- Create the main ScreenGui
+
     local SyferEngHub = Instance.new("ScreenGui")
     SyferEngHub.Name = options.name or "SyferEngHub"
     SyferEngHub.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     SyferEngHub.ResetOnSpawn = false
-    
-    -- Try to parent to CoreGui first, fallback to PlayerGui
+
     pcall(function()
         SyferEngHub.Parent = CoreGui
     end)
@@ -62,8 +51,8 @@ function SyferEngHubLibrary.Create(options)
 
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
-MainFrame.Size = UDim2.new(0, 650, 0, 400) -- Increased size from 550x350 to 650x400
-MainFrame.Position = UDim2.new(0.5, -325, 0.5, -200) -- Adjusted position to keep it centered
+MainFrame.Size = UDim2.new(0, 650, 0, 400)
+MainFrame.Position = UDim2.new(0.5, -325, 0.5, -200)
 MainFrame.BackgroundColor3 = DEFAULT_COLOR
 MainFrame.BorderSizePixel = 0
 MainFrame.Active = true
@@ -127,7 +116,7 @@ CornerFixGradient.Parent = CornerFix
 
 local TitleText = Instance.new("TextLabel")
 TitleText.Name = "TitleText"
-TitleText.Size = UDim2.new(1, -40, 1, 0) -- -40 to leave space for close button
+TitleText.Size = UDim2.new(1, -40, 1, 0)
 TitleText.Position = UDim2.new(0, 10, 0, 0)
 TitleText.BackgroundTransparency = 1
 TitleText.Text = "Syfer-eng Hub"
@@ -137,8 +126,6 @@ TitleText.TextSize = 16
 TitleText.TextXAlignment = Enum.TextXAlignment.Left
 TitleText.ZIndex = 2
 TitleText.Parent = TitleBar
-
--- Title text is now taking full width since player count moved to sidebar
 
 local CloseButton = Instance.new("TextButton")
 CloseButton.Name = "CloseButton"
@@ -195,7 +182,7 @@ MainTabContent.BackgroundTransparency = 1
 MainTabContent.BorderSizePixel = 0
 MainTabContent.ScrollBarThickness = 4
 MainTabContent.ScrollBarImageColor3 = ACCENT_COLOR
-MainTabContent.CanvasSize = UDim2.new(0, 0, 0, 0) -- Will be updated dynamically
+MainTabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 MainTabContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
 MainTabContent.Parent = ContentFrame
 MainTabContent.Visible = true
@@ -219,12 +206,11 @@ ConfigTabContent.BackgroundTransparency = 1
 ConfigTabContent.BorderSizePixel = 0
 ConfigTabContent.ScrollBarThickness = 4
 ConfigTabContent.ScrollBarImageColor3 = ACCENT_COLOR
-ConfigTabContent.CanvasSize = UDim2.new(0, 0, 0, 0) -- Will be updated dynamically
+ConfigTabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 ConfigTabContent.AutomaticCanvasSize = Enum.AutomaticSize.Y
 ConfigTabContent.Parent = ContentFrame
 ConfigTabContent.Visible = false
 
--- Create Settings Tab Content
 local SettingsTabContent = Instance.new("ScrollingFrame")
 SettingsTabContent.Name = "SettingsTabContent"
 SettingsTabContent.Size = UDim2.new(1, 0, 1, 0)
@@ -272,7 +258,6 @@ local ConfigInputCorner = Instance.new("UICorner")
 ConfigInputCorner.CornerRadius = UDim.new(0, 6)
 ConfigInputCorner.Parent = ConfigInputArea
 
--- Add outline to Config Input Area
 local ConfigInputOutline = Instance.new("UIStroke")
 ConfigInputOutline.Name = "ConfigInputOutline"
 ConfigInputOutline.Color = Color3.fromRGB(80, 80, 100)
@@ -308,7 +293,6 @@ local SaveButtonCorner = Instance.new("UICorner")
 SaveButtonCorner.CornerRadius = UDim.new(0, 6)
 SaveButtonCorner.Parent = SaveConfigButton
 
--- Add outline to Save Config button
 local SaveButtonOutline = Instance.new("UIStroke")
 SaveButtonOutline.Name = "SaveButtonOutline"
 SaveButtonOutline.Color = Color3.fromRGB(100, 30, 150)
@@ -337,7 +321,6 @@ local ConfigListCorner = Instance.new("UICorner")
 ConfigListCorner.CornerRadius = UDim.new(0, 6)
 ConfigListCorner.Parent = ConfigListContainer
 
--- Add outline to Config List Container
 local ConfigListOutline = Instance.new("UIStroke")
 ConfigListOutline.Name = "ConfigListOutline"
 ConfigListOutline.Color = Color3.fromRGB(80, 80, 100)
@@ -352,7 +335,7 @@ ConfigItems.BackgroundTransparency = 1
 ConfigItems.BorderSizePixel = 0
 ConfigItems.ScrollBarThickness = 4
 ConfigItems.ScrollBarImageColor3 = ACCENT_COLOR
-ConfigItems.CanvasSize = UDim2.new(0, 0, 0, 0) -- Will be updated dynamically
+ConfigItems.CanvasSize = UDim2.new(0, 0, 0, 0)
 ConfigItems.AutomaticCanvasSize = Enum.AutomaticSize.Y
 ConfigItems.Parent = ConfigListContainer
 
@@ -382,16 +365,14 @@ local function createTabButton(name, position)
     TabButton.TextColor3 = currentTab == name and ACCENT_COLOR or TEXT_COLOR
     TabButton.TextSize = 14
     TabButton.Parent = TabBar
-    
-    -- Create tab button outline
+
     local TabOutline = Instance.new("UIStroke")
     TabOutline.Name = "TabOutline"
     TabOutline.Color = Color3.fromRGB(60, 60, 80)
     TabOutline.Thickness = 1
     TabOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     TabOutline.Parent = TabButton
-    
-    -- Indicator for active tab
+
     local TabIndicator = Instance.new("Frame")
     TabIndicator.Name = "TabIndicator"
     TabIndicator.Size = UDim2.new(0, 3, 1, 0)
@@ -402,7 +383,7 @@ local function createTabButton(name, position)
     TabIndicator.Parent = TabButton
     
     TabButton.MouseButton1Click:Connect(function()
-        -- Update tab visibility
+
         if name == "Main" then
             MainTabContent.Visible = true
             ConfigTabContent.Visible = false
@@ -411,14 +392,13 @@ local function createTabButton(name, position)
             MainTabContent.Visible = false
             ConfigTabContent.Visible = true
             SettingsTabContent.Visible = false
-            refreshConfigList() -- Refresh the config list when switching to config tab
+            refreshConfigList()
         elseif name == "Settings" then
             MainTabContent.Visible = false
             ConfigTabContent.Visible = false
             SettingsTabContent.Visible = true
         end
-        
-        -- Update tab button appearance
+
         for _, button in pairs(TabBar:GetChildren()) do
             if button:IsA("TextButton") then
                 button.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
@@ -432,8 +412,7 @@ local function createTabButton(name, position)
         TabIndicator.Visible = true
         currentTab = name
     end)
-    
-    -- Hover effect
+
     TabButton.MouseEnter:Connect(function()
         if currentTab ~= name then
             TabButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
@@ -449,17 +428,15 @@ local function createTabButton(name, position)
     return TabButton
 end
 
--- Create user profile picture display at the top of the TabBar
 local UserProfileFrame = Instance.new("Frame")
 UserProfileFrame.Name = "UserProfileFrame"
-UserProfileFrame.Size = UDim2.new(1, 0, 0, 80) -- Same width as TabBar, height matches button height × 2
+UserProfileFrame.Size = UDim2.new(1, 0, 0, 80)
 UserProfileFrame.Position = UDim2.new(0, 0, 0, 0)
 UserProfileFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
 UserProfileFrame.BorderSizePixel = 0
 UserProfileFrame.ZIndex = 2
 UserProfileFrame.Parent = TabBar
 
--- Profile frame outline
 local ProfileOutline = Instance.new("UIStroke")
 ProfileOutline.Name = "ProfileOutline"
 ProfileOutline.Color = Color3.fromRGB(60, 60, 80)
@@ -467,28 +444,24 @@ ProfileOutline.Thickness = 1
 ProfileOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 ProfileOutline.Parent = UserProfileFrame
 
--- Profile frame corner
 local ProfileCorner = Instance.new("UICorner")
 ProfileCorner.CornerRadius = UDim.new(0, 6)
 ProfileCorner.Parent = UserProfileFrame
 
--- User avatar image
 local UserAvatar = Instance.new("ImageLabel")
 UserAvatar.Name = "UserAvatar"
 UserAvatar.Size = UDim2.new(0, 60, 0, 60)
-UserAvatar.Position = UDim2.new(0.5, -30, 0, 10) -- Centered horizontally, 10px from top
+UserAvatar.Position = UDim2.new(0.5, -30, 0, 10)
 UserAvatar.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
 UserAvatar.BackgroundTransparency = 0
 UserAvatar.BorderSizePixel = 0
 UserAvatar.ZIndex = 3
 UserAvatar.Parent = UserProfileFrame
 
--- Avatar corner rounding
 local AvatarCorner = Instance.new("UICorner")
-AvatarCorner.CornerRadius = UDim.new(1, 0) -- Make it circular
+AvatarCorner.CornerRadius = UDim.new(1, 0)
 AvatarCorner.Parent = UserAvatar
 
--- Avatar outline
 local AvatarOutline = Instance.new("UIStroke")
 AvatarOutline.Name = "AvatarOutline"
 AvatarOutline.Color = ACCENT_COLOR
@@ -496,10 +469,7 @@ AvatarOutline.Thickness = 2
 AvatarOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 AvatarOutline.Parent = UserAvatar
 
--- Avatar will be loaded in the updatePlayerInfo function
-
--- Create tab buttons with adjusted positions to account for profile picture
-local MainTab = createTabButton("Main", 85) -- Start after the profile picture
+local MainTab = createTabButton("Main", 85)
 local ConfigTab = createTabButton("Config", 125)
 local SettingsTab = createTabButton("Settings", 165)
 
@@ -548,11 +518,10 @@ CloseButton.MouseButton1Click:Connect(function()
     SyferEngHub:Destroy()
 end)
 
--- Player count display above username in sidebar
 local PlayerCountLabel = Instance.new("TextLabel")
 PlayerCountLabel.Name = "PlayerCountLabel"
-PlayerCountLabel.Size = UDim2.new(1, 0, 0, 25) -- Full width, 25px height
-PlayerCountLabel.Position = UDim2.new(0, 0, 1, -50) -- Position 25px above username
+PlayerCountLabel.Size = UDim2.new(1, 0, 0, 25)
+PlayerCountLabel.Position = UDim2.new(0, 0, 1, -50)
 PlayerCountLabel.BackgroundTransparency = 1
 PlayerCountLabel.Font = Enum.Font.Gotham
 PlayerCountLabel.TextColor3 = TEXT_COLOR
@@ -561,11 +530,10 @@ PlayerCountLabel.TextXAlignment = Enum.TextXAlignment.Center
 PlayerCountLabel.ZIndex = 3
 PlayerCountLabel.Parent = TabBar
 
--- Username display in the sidebar (full left)
 local UsernameLabel = Instance.new("TextLabel")
 UsernameLabel.Name = "UsernameLabel"
-UsernameLabel.Size = UDim2.new(1, 0, 0, 25) -- Full width, 25px height
-UsernameLabel.Position = UDim2.new(0, 0, 1, -25) -- Position at bottom of TabBar
+UsernameLabel.Size = UDim2.new(1, 0, 0, 25)
+UsernameLabel.Position = UDim2.new(0, 0, 1, -25)
 UsernameLabel.BackgroundTransparency = 1
 UsernameLabel.Font = Enum.Font.Gotham
 UsernameLabel.TextColor3 = TEXT_COLOR
@@ -574,18 +542,14 @@ UsernameLabel.TextXAlignment = Enum.TextXAlignment.Center
 UsernameLabel.ZIndex = 3
 UsernameLabel.Parent = TabBar
 
--- Update player information
 local function updatePlayerInfo()
     local username = player.Name or "Unknown"
     local playerCount = #Players:GetPlayers()
-    
-    -- Update username in sidebar
+        
     UsernameLabel.Text = username
-    
-    -- Update player count in sidebar
+
     PlayerCountLabel.Text = "Players: " .. playerCount
-    
-    -- Update player avatar if it wasn't loaded or changed
+
     pcall(function()
         local userId = player.UserId
         local thumbType = Enum.ThumbnailType.HeadShot
@@ -595,10 +559,8 @@ local function updatePlayerInfo()
     end)
 end
 
--- Initial update
 updatePlayerInfo()
 
--- Periodically update player count and avatar (every 5 seconds)
 spawn(function()
     while SyferEngHub.Parent do
         updatePlayerInfo()
@@ -607,7 +569,7 @@ spawn(function()
 end)
 
 local function createToggleButton(name, onScript, offScript, isEnabled)
-    -- Default to disabled if not specified
+
     isEnabled = isEnabled or false
     
     local ToggleButton = Instance.new("Frame")
@@ -616,8 +578,7 @@ local function createToggleButton(name, onScript, offScript, isEnabled)
     ToggleButton.BackgroundColor3 = TERTIARY_COLOR
     ToggleButton.BorderSizePixel = 0
     ToggleButton.Parent = MainTabContent
-    
-    -- Create an outline around the toggle button
+
     local ToggleOutline = Instance.new("UIStroke")
     ToggleOutline.Name = "ToggleOutline"
     ToggleOutline.Color = Color3.fromRGB(80, 80, 100)
@@ -625,7 +586,6 @@ local function createToggleButton(name, onScript, offScript, isEnabled)
     ToggleOutline.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
     ToggleOutline.Parent = ToggleButton
     
-    -- Add a subtle gradient
     local ToggleGradient = Instance.new("UIGradient")
     ToggleGradient.Color = ColorSequence.new({
         ColorSequenceKeypoint.new(0, TERTIARY_COLOR),
@@ -634,12 +594,10 @@ local function createToggleButton(name, onScript, offScript, isEnabled)
     ToggleGradient.Rotation = 90
     ToggleGradient.Parent = ToggleButton
     
-    -- Round the corners
     local ToggleCorner = Instance.new("UICorner")
     ToggleCorner.CornerRadius = UDim.new(0, 6)
     ToggleCorner.Parent = ToggleButton
     
-    -- Button Text
     local ButtonText = Instance.new("TextLabel")
     ButtonText.Name = "ButtonText"
     ButtonText.Size = UDim2.new(0.8, 0, 1, 0)
